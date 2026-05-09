@@ -1,0 +1,1497 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Siwon Ryu — Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070a;
+    --bg-2: #0c0e14;
+    --bg-3: #14171f;
+    --ink: #f4f6fb;
+    --ink-2: #b6bcc8;
+    --muted: #6e7585;
+    --line: #ffffff14;
+    --line-2: #ffffff08;
+    --accent: oklch(0.78 0.16 245);
+    --accent-2: oklch(0.78 0.16 295);
+  }
+  *,*::before,*::after { box-sizing: border-box; cursor: none !important; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Custom cursor — small ring + dot */
+  .cursor-ring {
+    position: fixed; left: 0; top: 0;
+    width: 40px; height: 40px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: width 220ms, height 220ms, background 220ms;
+    backdrop-filter: invert(1) grayscale(1);
+  }
+  .cursor-ring.lg {
+    width: 64px; height: 64px;
+    background: rgba(255,255,255,0.04);
+  }
+  .cursor-dot {
+    position: fixed; left: 0; top: 0;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+
+  /* NAV */
+  nav.top {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(18px) saturate(140%);
+    background: rgba(6, 7, 10, 0.7);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  nav.top .name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  nav.top .name .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-right: 8px;
+    box-shadow: 0 0 8px var(--accent);
+    vertical-align: 1px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    50% { opacity: 0.4; }
+  }
+  nav.top .links {
+    display: flex; gap: 28px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+  }
+  nav.top a { color: inherit; text-decoration: none; transition: color 150ms; }
+  nav.top a:hover { color: var(--ink); }
+  nav.top .cta {
+    font-size: 12.5px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 500;
+  }
+  nav.top .cta:hover { background: var(--accent); color: var(--bg); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    left: 50%; bottom: -40%;
+    width: 140%; height: 90%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, oklch(0.68 0.20 250 / 0.55), transparent 60%);
+    z-index: -1;
+    filter: blur(40px);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, var(--line-2) 1px, transparent 1px),
+                      linear-gradient(to bottom, var(--line-2) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    z-index: -1;
+  }
+  .hero .eyebrow {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero .eyebrow .b {
+    color: var(--accent);
+    margin: 0 8px;
+  }
+  .hero h1 {
+    font-weight: 600;
+    font-size: clamp(56px, 9vw, 140px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 0;
+    text-align: center;
+    max-width: 14ch;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero .sub {
+    margin: 32px auto 0;
+    max-width: 540px;
+    text-align: center;
+    font-size: 18px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .hero .ctas {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  .hero .ctas a {
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: transform 200ms, background 200ms;
+  }
+  .hero .ctas a:hover { transform: translateY(-2px); }
+  .hero .ctas .primary {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .hero .ctas .primary:hover { background: var(--accent); }
+  .hero .ctas .secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .hero .ctas .secondary:hover { background: var(--bg-3); }
+  .hero .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero .scroll-hint::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--muted);
+    animation: shimmer 2s ease-in-out infinite;
+  }
+  @keyframes shimmer { 50% { background: var(--accent); } }
+
+  /* TICKER */
+  .ticker {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 0;
+    overflow: hidden;
+    background: var(--bg-2);
+  }
+  .ticker-track {
+    display: flex;
+    gap: 48px;
+    white-space: nowrap;
+    width: max-content;
+    animation: scroll 30s linear infinite;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .ticker-track .b { color: var(--accent); }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SCROLL-DRIVEN SHOWCASE — sticky stage */
+  .stage-wrap {
+    position: relative;
+    height: 400vh;
+  }
+  .stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .stage-canvas {
+    position: relative;
+    width: min(900px, 88vw);
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #14171f, #0a0c12);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    box-shadow: 0 40px 100px -40px rgba(80, 130, 255, 0.35), 0 0 0 1px var(--line) inset;
+  }
+  .stage-canvas svg.bg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.6; }
+  .stage-canvas .label {
+    position: absolute;
+    top: 16px; left: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    z-index: 5;
+  }
+  .stage-canvas .label .b { color: var(--accent); }
+  .stage-text {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+  .stage-text-inner {
+    text-align: center;
+    max-width: 80%;
+  }
+  .stage-text h2 {
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 12px;
+  }
+  .stage-text p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .stage-counter {
+    position: absolute;
+    bottom: 16px; left: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+  .stage-counter .b { color: var(--accent); }
+  .stage-progress {
+    position: absolute;
+    bottom: 16px; right: 20px; left: 60%;
+    display: flex; gap: 4px;
+  }
+  .stage-progress span {
+    flex: 1;
+    height: 2px;
+    background: var(--line);
+    border-radius: 1px;
+    overflow: hidden;
+    position: relative;
+  }
+  .stage-progress span.active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+  }
+  .stage-progress span.active.partial::after {
+    background: linear-gradient(to right, var(--accent) var(--p, 0%), transparent var(--p, 0%));
+  }
+
+  /* Scene visuals */
+  .scene {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 400ms;
+    display: grid;
+    place-items: center;
+  }
+  .scene.active { opacity: 1; }
+
+  .scene-1 .ring {
+    position: absolute;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+  }
+  .scene-1 .r1 { width: 70%; height: 70%; }
+  .scene-1 .r2 { width: 50%; height: 50%; border-color: oklch(0.78 0.16 245 / 0.4); }
+  .scene-1 .r3 { width: 30%; height: 30%; border-color: oklch(0.78 0.16 245 / 0.7); }
+  .scene-1 .core {
+    width: 14%; aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--accent), oklch(0.45 0.18 250));
+    box-shadow: 0 0 40px var(--accent), 0 0 80px oklch(0.78 0.16 245 / 0.5);
+  }
+  .scene-1 .orbit {
+    position: absolute;
+    width: 70%; aspect-ratio: 1;
+    animation: spin 18s linear infinite;
+  }
+  .scene-1 .orbit .sat {
+    position: absolute;
+    top: 0; left: 50%;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--accent);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .scene-2 .axes {
+    width: 80%; height: 80%;
+    position: relative;
+  }
+  .scene-2 svg { width: 100%; height: 100%; }
+
+  .scene-3 .pcl {
+    width: 84%; height: 84%;
+    position: relative;
+  }
+  .scene-3 .pt {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent);
+  }
+
+  .scene-4 .terminal-mini {
+    width: 78%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--ink-2);
+  }
+  .scene-4 .terminal-mini .pr { color: var(--muted); }
+  .scene-4 .terminal-mini .ok { color: oklch(0.78 0.16 145); }
+  .scene-4 .terminal-mini .ac { color: var(--accent); }
+
+  /* EXPERIENCE */
+  .exp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .exp-card {
+    background: var(--bg-2);
+    padding: 36px 40px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    align-items: start;
+    transition: background 200ms;
+  }
+  .exp-card:hover { background: var(--bg-3); }
+  @media (max-width: 900px) {
+    .exp-card { grid-template-columns: 1fr; gap: 20px; }
+  }
+  .exp-left .company {
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+  }
+  .exp-left .role {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .exp-left .dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .exp-left .location {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .exp-right .bullets {
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .exp-right .bullets li {
+    font-size: 15px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    padding-left: 16px;
+    position: relative;
+  }
+  .exp-right .bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 12px;
+    top: 2px;
+  }
+  .exp-right .bullets li .b { color: var(--ink); font-weight: 500; }
+  .exp-right .exp-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .exp-right .exp-stack span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .exp-right .outcome {
+    margin-top: 16px;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+
+  /* PROJECTS */
+  .section {
+    padding: 140px 0;
+    border-top: 1px solid var(--line);
+  }
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .sec-head {
+    margin-bottom: 64px;
+  }
+  .sec-head .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .sec-head h2 {
+    font-weight: 600;
+    font-size: clamp(40px, 5.5vw, 80px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0;
+    max-width: 18ch;
+  }
+  .sec-head h2 .grad {
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+  }
+  .sec-head .sub {
+    margin-top: 20px;
+    color: var(--ink-2);
+    font-size: 17px;
+    max-width: 50ch;
+    line-height: 1.55;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 16px;
+    grid-auto-rows: 360px;
+  }
+  @media (max-width: 900px) { .project-grid { grid-template-columns: 1fr; } }
+  .pcard {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 380ms cubic-bezier(.2,.7,.2,1), border-color 200ms;
+    isolation: isolate;
+  }
+  .pcard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), oklch(0.78 0.16 245 / 0.10), transparent 50%);
+    opacity: 0;
+    transition: opacity 240ms;
+    z-index: 0;
+  }
+  .pcard:hover { transform: translateY(-4px); border-color: oklch(0.78 0.16 245 / 0.4); }
+  .pcard:hover::before { opacity: 1; }
+  .pcard > * { position: relative; z-index: 1; }
+  .pcard .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .pcard h3 {
+    margin: 8px 0 8px;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .pcard p {
+    margin: 0;
+    color: var(--ink-2);
+    max-width: 40ch;
+    line-height: 1.55;
+    font-size: 14.5px;
+  }
+  .pcard .stack {
+    position: absolute;
+    bottom: 28px; left: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .pcard .stack .b { color: var(--accent); }
+  .pcard .open {
+    position: absolute;
+    bottom: 24px; right: 24px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    display: grid; place-items: center;
+    transition: background 200ms, border-color 200ms;
+  }
+  .pcard:hover .open {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+  .pcard.feat { grid-column: span 2; }
+  @media (max-width: 900px) { .pcard.feat { grid-column: auto; } }
+  .pcard.feat h3 { font-size: 36px; }
+
+  /* Filter bar */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .filters .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 7px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 160ms, color 160ms, border-color 160ms;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .filters .chip:hover { border-color: var(--ink-2); color: var(--ink); }
+  .filters .chip.active { background: var(--bg-3); color: var(--ink); border-color: var(--ink-2); }
+  .filters .chip .ct {
+    background: var(--bg-3);
+    color: var(--muted);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 999px;
+  }
+  .filters .chip.active .ct { background: var(--bg); }
+  .filters .chip.featured { border-color: oklch(0.78 0.16 245 / 0.5); color: var(--accent); }
+  .filters .chip.featured.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .filters .chip.featured.active .ct { color: var(--bg); }
+  .filters .chip .star { display: inline-block; margin-right: 4px; opacity: 0.8; }
+
+  /* about */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; } }
+  .portrait {
+    aspect-ratio: 4 / 5;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background:
+      repeating-linear-gradient(135deg, transparent 0 14px, var(--line-2) 14px 15px),
+      var(--bg-2);
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .portrait .ph {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    border-radius: 4px;
+  }
+  .about-body p {
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink);
+    max-width: 32ch;
+    margin: 0 0 18px;
+    letter-spacing: -0.005em;
+  }
+  .about-body p .b { color: var(--accent); }
+
+  .stats {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .stats .s {
+    background: var(--bg-2);
+    padding: 22px;
+  }
+  .stats .s .v {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  .stats .s .v .grad {
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+  }
+  .stats .s .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* CTA banner */
+  .cta-banner {
+    margin: 0 32px 80px;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 80px 56px;
+    border-radius: 24px;
+    background: radial-gradient(ellipse at top right, oklch(0.5 0.20 250 / 0.55), transparent 60%), var(--bg-2);
+    border: 1px solid var(--line);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, var(--line-2) 1px, transparent 1px),
+                      linear-gradient(to bottom, var(--line-2) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-banner h2 {
+    position: relative;
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0 0 16px;
+  }
+  .cta-banner h2 .grad {
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+  }
+  .cta-banner p {
+    position: relative;
+    margin: 0 auto 32px;
+    max-width: 50ch;
+    color: var(--ink-2);
+    font-size: 17px;
+  }
+  .cta-banner .row {
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+    position: relative;
+  }
+  .cta-banner .row a {
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 500;
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .cta-banner .row a.alt {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+
+  /* contact list */
+  .contact-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  @media (max-width: 700px) { .contact-list { grid-template-columns: 1fr; } }
+  .contact-list a {
+    background: var(--bg-2);
+    padding: 28px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: background 200ms;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .contact-list a:hover { background: var(--bg-3); color: var(--accent); }
+  .contact-list .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .contact-list .v {
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+
+  footer.foot {
+    padding: 32px;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-top: 1px solid var(--line);
+  }
+  footer.foot a { color: var(--muted); text-decoration: none; }
+  footer.foot a:hover { color: var(--accent); }
+
+  /* MODAL */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 280ms;
+    background: rgba(6, 7, 10, 0.85);
+    backdrop-filter: blur(12px);
+  }
+  .modal.open { pointer-events: auto; opacity: 1; }
+  .modal-card {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -47%) scale(0.96);
+    width: min(1000px, calc(100vw - 48px));
+    max-height: calc(100vh - 80px);
+    overflow: auto;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    transition: transform 360ms cubic-bezier(.2,.7,.2,1);
+  }
+  .modal.open .modal-card {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .modal-bar {
+    position: sticky; top: 0;
+    background: rgba(12, 14, 20, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 5;
+  }
+  .modal-bar .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .modal-bar .lbl .b { color: var(--accent); }
+  .modal-bar button {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .modal-bar button:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .modal-body {
+    padding: 48px 56px 64px;
+  }
+  .modal-body h2 {
+    font-weight: 600;
+    font-size: clamp(40px, 5vw, 64px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0 0 16px;
+  }
+  .modal-body h2 .grad { background: linear-gradient(120deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .modal-body .lede {
+    color: var(--ink-2);
+    font-size: 18px;
+    margin: 0 0 32px;
+    max-width: 56ch;
+  }
+  .modal-body .meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 32px 0 32px;
+  }
+  .modal-body .meta .c { background: var(--bg); padding: 18px 20px; }
+  .modal-body .meta .c .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .modal-body .meta .c .v {
+    font-size: 14px;
+  }
+  .modal-body .img {
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--line);
+    background:
+      repeating-linear-gradient(135deg, transparent 0 14px, var(--line) 14px 15px),
+      var(--bg);
+    border-radius: 8px;
+    margin: 24px 0;
+    display: grid;
+    place-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .modal-body .row2 {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .modal-body .row2 .img { aspect-ratio: 1; }
+  .modal-body p {
+    color: var(--ink-2);
+    line-height: 1.65;
+    font-size: 16px;
+    max-width: 60ch;
+  }
+  .modal-body p .b { color: var(--ink); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="cursor-ring" id="cring"></div>
+<div class="cursor-dot" id="cdot"></div>
+
+<nav class="top">
+  <div class="inner">
+    <span class="name"><span class="dot"></span>Siwon Ryu</span>
+    <div class="links">
+      <a href="#">Home</a>
+      <a href="#experience">Experience</a>
+      <a href="#work">Work</a>
+      <a href="#about">Projects</a>
+    </div>
+    <a class="cta" href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="eyebrow">ROBOTICS<span class="b">·</span>BS/MS PROGRAM<span class="b">·</span>CLASS OF 2027</div>
+    <h1>Engineered<br>to <span class="grad">move.</span></h1>
+    <p class="sub">A robotics portfolio. Five projects, one mobile manipulator, far too many launch files. Built by Siwon Ryu.</p>
+    <div class="ctas">
+      <a class="primary" href="#work">See the work</a>
+      <a class="secondary" href="#contact">Get in touch</a>
+    </div>
+  </div>
+  <div class="scroll-hint">scroll</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>Perception <span class="b">●</span></span>
+    <span>Manipulation <span class="b">●</span></span>
+    <span>Controls <span class="b">●</span></span>
+    <span>Estimation <span class="b">●</span></span>
+    <span>Embedded <span class="b">●</span></span>
+    <span>Sim-to-real <span class="b">●</span></span>
+    <span>ROS 2 <span class="b">●</span></span>
+    <span>MoveIt <span class="b">●</span></span>
+    <span>MuJoCo <span class="b">●</span></span>
+    <span>PyTorch <span class="b">●</span></span>
+    <span>Drake <span class="b">●</span></span>
+    <span>Open3D <span class="b">●</span></span>
+    <!-- duplicate for seamless loop -->
+    <span>Perception <span class="b">●</span></span>
+    <span>Manipulation <span class="b">●</span></span>
+    <span>Controls <span class="b">●</span></span>
+    <span>Estimation <span class="b">●</span></span>
+    <span>Embedded <span class="b">●</span></span>
+    <span>Sim-to-real <span class="b">●</span></span>
+    <span>ROS 2 <span class="b">●</span></span>
+    <span>MoveIt <span class="b">●</span></span>
+    <span>MuJoCo <span class="b">●</span></span>
+    <span>PyTorch <span class="b">●</span></span>
+    <span>Drake <span class="b">●</span></span>
+    <span>Open3D <span class="b">●</span></span>
+  </div>
+</div>
+
+<!-- SCROLL-DRIVEN STAGE -->
+<div class="stage-wrap" id="stageWrap">
+  <div class="stage">
+    <div class="stage-canvas">
+      <div class="label"><span class="b">●</span> SYSTEM · live demo placeholder</div>
+
+      <!-- scenes -->
+      <div class="scene scene-1 active" data-scene="0">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <div class="orbit"><div class="sat"></div></div>
+        <div class="core"></div>
+      </div>
+      <div class="scene scene-2" data-scene="1">
+        <div class="axes">
+          <svg viewBox="0 0 800 500">
+            <defs>
+              <linearGradient id="g2" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0" stop-color="oklch(0.78 0.16 245)"/>
+                <stop offset="1" stop-color="oklch(0.78 0.16 295)"/>
+              </linearGradient>
+            </defs>
+            <line x1="80" y1="430" x2="720" y2="430" stroke="#ffffff20"/>
+            <line x1="80" y1="430" x2="80" y2="60" stroke="#ffffff20"/>
+            <text x="730" y="434" fill="#6e7585" font-family="JetBrains Mono" font-size="11">t</text>
+            <text x="60" y="56" fill="#6e7585" font-family="JetBrains Mono" font-size="11">θ̇</text>
+            <line x1="80" y1="200" x2="720" y2="200" stroke="#ffffff08"/>
+            <line x1="80" y1="320" x2="720" y2="320" stroke="#ffffff08"/>
+            <line x1="240" y1="430" x2="240" y2="60" stroke="#ffffff08"/>
+            <line x1="400" y1="430" x2="400" y2="60" stroke="#ffffff08"/>
+            <line x1="560" y1="430" x2="560" y2="60" stroke="#ffffff08"/>
+            <path d="M 80 250 L 720 250" stroke="#ffffff30" stroke-dasharray="3 4"/>
+            <text x="730" y="254" fill="#ffffff60" font-family="JetBrains Mono" font-size="10">ref</text>
+            <path id="response" d="M 80 430 C 200 60, 280 90, 400 250 S 600 270, 720 250" stroke="url(#g2)" stroke-width="2.5" fill="none"/>
+          </svg>
+        </div>
+      </div>
+      <div class="scene scene-3" data-scene="2">
+        <div class="pcl" id="pcl"></div>
+      </div>
+      <div class="scene scene-4" data-scene="3">
+        <div class="terminal-mini">
+          <div><span class="pr">$</span> <span class="ac">ros2 launch siwon_demo bringup.launch.py</span></div>
+          <div><span class="pr">[INFO]</span> nav2 active</div>
+          <div><span class="pr">[INFO]</span> moveit2 ready · 6-DoF</div>
+          <div><span class="pr">[INFO]</span> realsense_d435i streaming</div>
+          <div><span class="pr">[</span><span class="ok">OK</span><span class="pr">]</span> system nominal</div>
+          <div><span class="pr">$</span> <span class="ac">./pickup --target tabletop_01</span></div>
+          <div>plan ✓ &nbsp;execute ✓ &nbsp;grasp ✓ &nbsp;<span class="ok">success</span></div>
+        </div>
+      </div>
+
+      <div class="stage-text">
+        <div class="stage-text-inner">
+          <h2 id="stageTitle">A perception loop.</h2>
+          <p id="stageDesc">Sense → estimate → plan → control. Repeat at 50 Hz.</p>
+        </div>
+      </div>
+
+      <div class="stage-counter"><span class="b" id="stageNum">01</span> / 04</div>
+      <div class="stage-progress" id="stageProgress">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">— Experience · 01</div>
+      <h2>Where I've <span class="grad">shipped</span> things.</h2>
+      <p class="sub">Internships where the hardware was real, the deadlines were realer, and the coffee was free.</p>
+    </div>
+
+    <div class="exp-list">
+
+      <div class="exp-card">
+        <div class="exp-left">
+          <div class="company">Acme Robotics Co.</div>
+          <div class="role">Robotics Software Intern</div>
+          <div class="dates">Jun 2025 — Aug 2025</div>
+          <div class="location">San Francisco, CA</div>
+        </div>
+        <div class="exp-right">
+          <ul class="bullets">
+            <li>Developed a <span class="b">real-time perception pipeline</span> for tabletop object detection, reducing latency by 40% over the existing baseline.</li>
+            <li>Integrated a <span class="b">force-torque sensor</span> into the grasp controller, enabling compliant manipulation of deformable objects.</li>
+            <li>Wrote simulation fixtures in MuJoCo to stress-test edge cases before deploying to hardware.</li>
+          </ul>
+          <div class="exp-stack">
+            <span>ROS 2</span><span>Python</span><span>C++</span><span>MuJoCo</span><span>PyTorch</span>
+          </div>
+          <div class="outcome">↳ Shipped in production firmware v2.4</div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-left">
+          <div class="company">Example Systems</div>
+          <div class="role">Controls Engineering Intern</div>
+          <div class="dates">May 2024 — Aug 2024</div>
+          <div class="location">Boston, MA</div>
+        </div>
+        <div class="exp-right">
+          <ul class="bullets">
+            <li>Designed and tuned a <span class="b">model-predictive controller</span> for a 3-DoF planar arm, cutting settling time by 25%.</li>
+            <li>Built a hardware-in-the-loop test bench that automated overnight regression runs against a Simulink ground truth.</li>
+            <li>Documented the full control architecture — the first time the team had anything beyond whiteboard notes.</li>
+          </ul>
+          <div class="exp-stack">
+            <span>MATLAB</span><span>Simulink</span><span>Python</span><span>Eigen</span><span>STM32</span>
+          </div>
+          <div class="outcome">↳ MPC shipped to two product lines</div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-left">
+          <div class="company">Placeholder Labs</div>
+          <div class="role">Research Intern</div>
+          <div class="dates">Jan 2024 — Apr 2024</div>
+          <div class="location">Remote</div>
+        </div>
+        <div class="exp-right">
+          <ul class="bullets">
+            <li>Implemented a <span class="b">sim-to-real transfer pipeline</span> for legged locomotion using domain randomization over terrain and friction parameters.</li>
+            <li>Ran ablation studies across reward formulations and reported findings in a lab memo that shaped the next experiment cycle.</li>
+          </ul>
+          <div class="exp-stack">
+            <span>PyTorch</span><span>Isaac Gym</span><span>Python</span><span>Weights & Biases</span>
+          </div>
+          <div class="outcome">↳ Results submitted to ICRA 2025 workshop</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="section" id="work">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">— Selected work · 05</div>
+      <h2>Projects with <span class="grad">a pulse</span>.</h2>
+      <p class="sub">Each one shipped, demoed, or competed. Click a card for a deeper write-up — diagrams, decisions, what I'd do differently.</p>
+    </div>
+
+    <div class="filters" id="filterBar"></div>
+    <div class="project-grid" id="projectGrid"></div>
+  </div>
+</section>
+
+<!-- ABOUT + CONTACT -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">— About · 02</div>
+      <h2>Robotics <span class="grad">student</span>, the long version.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="portrait"><span class="ph">[ HEADSHOT — 4:5 ]</span></div>
+      <div class="about-body">
+        <p>I'm Siwon — a Bachelor's/Master's robotics engineering student. I work the full stack of moving things: <span class="b">sensing, estimation, planning, control</span>.</p>
+        <p>What I love is the moment a controller stops fighting the hardware and starts looking like it meant to do that. I chase that moment, mostly badly, occasionally well.</p>
+        <p>Looking for a <span class="b">summer 2026 internship</span> on a team where the robot leaves the lab.</p>
+
+        <div class="stats">
+          <div class="s"><div class="v"><span class="grad">22+</span></div><div class="k">Repos shipped</div></div>
+          <div class="s"><div class="v"><span class="grad">5</span></div><div class="k">Funded projects</div></div>
+          <div class="s"><div class="v"><span class="grad">3rd</span></div><div class="k">F1Tenth regional</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="contact" style="margin-top: 80px;">
+      <div class="sec-head" style="margin-bottom: 32px;">
+        <div class="num">— Contact · 03</div>
+        <h2>Three <span class="grad">good</span> ways<br>to reach me.</h2>
+      </div>
+      <div class="contact-list">
+        <a href="mailto:siwonryu1425@gmail.com">
+          <span class="k">Email · best for new conversations</span>
+          <span class="v">siwonryu1425@gmail.com</span>
+        </a>
+        <a href="https://github.com/SRyu1425" target="_blank">
+          <span class="k">GitHub · code</span>
+          <span class="v">github.com/SRyu1425</span>
+        </a>
+        <a href="https://www.linkedin.com/in/siwonryu1425" target="_blank">
+          <span class="k">LinkedIn · network</span>
+          <span class="v">linkedin.com/in/siwonryu1425</span>
+        </a>
+        <a href="#">
+          <span class="k">Resume · PDF, one page</span>
+          <span class="v">resume.pdf</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <span>© 2026 Siwon Ryu</span>
+</footer>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-bar">
+      <span class="lbl"><span class="b">●</span> CASE STUDY · <span id="mNum">01</span></span>
+      <button data-close>Close</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<script>
+// CURSOR
+const cring = document.getElementById('cring'), cdot = document.getElementById('cdot');
+let cx = innerWidth/2, cy = innerHeight/2, tx = cx, ty = cy;
+addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; cdot.style.transform = `translate(${tx}px,${ty}px) translate(-50%,-50%)`; });
+function loop() {
+  cx += (tx-cx)*0.18; cy += (ty-cy)*0.18;
+  cring.style.transform = `translate(${cx}px,${cy}px) translate(-50%,-50%)`;
+  requestAnimationFrame(loop);
+}
+loop();
+addEventListener('mouseover', (e) => {
+  const t = e.target.closest('a, button, .pcard, [data-close]');
+  cring.classList.toggle('lg', !!t);
+});
+
+// SCROLL-DRIVEN STAGE
+const stageWrap = document.getElementById('stageWrap');
+const sceneEls = document.querySelectorAll('.scene');
+const stageTitle = document.getElementById('stageTitle');
+const stageDesc = document.getElementById('stageDesc');
+const stageNum = document.getElementById('stageNum');
+const progressEls = document.querySelectorAll('#stageProgress span');
+const sceneCopy = [
+  { title: "A perception loop.", desc: "Sense → estimate → plan → control. Repeat at 50 Hz." },
+  { title: "Stable in the limit.", desc: "Closed-loop response of a PD-controlled joint, settling to reference." },
+  { title: "Sparse but legible.", desc: "Point cloud after voxel filter and tabletop segmentation." },
+  { title: "From bring-up to grasp.", desc: "End-to-end ROS 2 stack — perception, planning, control, in one launch." },
+];
+function updateStage() {
+  const r = stageWrap.getBoundingClientRect();
+  const total = stageWrap.offsetHeight - innerHeight;
+  const p = Math.max(0, Math.min(1, -r.top / total));
+  const idx = Math.min(3, Math.floor(p * 4));
+  const localP = (p * 4) - idx;
+  sceneEls.forEach((el, i) => el.classList.toggle('active', i === idx));
+  stageTitle.textContent = sceneCopy[idx].title;
+  stageDesc.textContent = sceneCopy[idx].desc;
+  stageNum.textContent = '0' + (idx + 1);
+  progressEls.forEach((el, i) => {
+    el.classList.remove('active', 'partial');
+    if (i < idx) { el.classList.add('active'); el.style.setProperty('--p', '100%'); }
+    else if (i === idx) { el.classList.add('active', 'partial'); el.style.setProperty('--p', (localP * 100) + '%'); }
+  });
+}
+addEventListener('scroll', updateStage, { passive: true });
+
+// Generate point cloud dots
+const pclEl = document.getElementById('pcl');
+for (let i = 0; i < 80; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'pt';
+  dot.style.left = (Math.random() * 100) + '%';
+  dot.style.top = (Math.random() * 100) + '%';
+  dot.style.opacity = (0.3 + Math.random() * 0.7).toFixed(2);
+  dot.style.transform = `scale(${(0.5 + Math.random() * 1.5).toFixed(2)})`;
+  pclEl.appendChild(dot);
+}
+
+updateStage();
+
+// PROJECTS
+// First 5 projects are "featured" — the curated highlight reel.
+const FEATURED_COUNT = 5;
+function isFeatured(p) { return projects.indexOf(p) < FEATURED_COUNT; }
+
+const projects = [
+  {
+    feat: true,
+    title: "Bipedal walker, in sim.",
+    label: "RL · DYNAMICS · 2026",
+    tags: ["RL", "Sim"],
+    desc: "Sim-to-real PPO controller for a 2-link biped on uneven terrain. 32M timesteps in MuJoCo, then a Gazebo URDF for cross-validation.",
+    stack: "PyTorch · MuJoCo · ROS 2",
+    year: "2026",
+    role: "Solo · 6 months",
+    repo: "SRyu1425/bipedal-walker",
+    status: "Sim only — hardware up next",
+    body: "Reward shaping was the trick — energy minimization plus uprightness plus forward progress, weighted carefully so the policy didn't just throw itself across the finish line. <span class='b'>32M timesteps</span> in MuJoCo, then a Gazebo URDF round-trip to validate. The hardest problem was never the policy — it was contact dynamics stable enough that the gradient meant anything."
+  },
+  {
+    title: "Mobile manipulator pickup.",
+    label: "MOTION · 2025",
+    tags: ["Manipulation", "Perception"],
+    desc: "Holonomic base + 6-DoF arm doing object handoff with a person at the bench.",
+    stack: "ROS 2 · MoveIt 2",
+    year: "2025",
+    role: "Team of 3",
+    repo: "SRyu1425/mobile-manip",
+    status: "Demoed at open house",
+    body: "End-to-end pipeline: RealSense point cloud → tabletop segmentation → ICP pose → MoveIt motion plan → Cartesian approach with force-stop. <span class='b'>80% of the integration time</span> was URDF, TF trees, and clock sync. The robot demoed reliably for two hours."
+  },
+  {
+    title: "EKF localization.",
+    label: "ESTIMATION · 2025",
+    tags: ["Estimation"],
+    desc: "Wheel + IMU + AprilTag-aided EKF, written from scratch in C++ on a TurtleBot.",
+    stack: "C++17 · Eigen",
+    year: "2025",
+    role: "Solo class",
+    repo: "SRyu1425/ekf-loc",
+    status: "Shipped",
+    body: "Implemented predict/update from scratch and tuned process and measurement noise from logged data, not the textbook. The satisfaction was watching the <span class='b'>covariance ellipse</span> snap shut the moment a tag came into view."
+  },
+  {
+    title: "F1Tenth racing stack.",
+    label: "AUTONOMY · 2024",
+    tags: ["Autonomy", "Perception"],
+    desc: "1/10-scale racing — wall-following → pure-pursuit raceline → reactive obstacle avoid.",
+    stack: "ROS 2 · LiDAR",
+    year: "2024",
+    role: "Team of 4",
+    repo: "SRyu1425/f1tenth",
+    status: "3rd at regional",
+    body: "We placed third at the regional meet. The reactive layer was follow-the-gap with velocity tied to lookahead error. We held everything together with launch files. <span class='b'>Don't ask.</span>"
+  },
+  {
+    title: "Quadruped trot.",
+    label: "GAITS · 2024",
+    tags: ["Gaits", "Sim"],
+    desc: "Hopf-oscillator central pattern generator on a 12-DoF quadruped sim.",
+    stack: "Python · Gazebo",
+    year: "2024",
+    role: "Solo",
+    repo: "SRyu1425/cpg-trot",
+    status: "Sim",
+    body: "Less impressive than RL, but I learned more about <span class='b'>feet-on-ground dynamics</span> doing it this way than from any paper."
+  },
+];
+
+let activeFilter = 'Featured';
+const grid = document.getElementById('projectGrid');
+const filterBar = document.getElementById('filterBar');
+
+// ---------- RENDERERS ----------
+function allTags() {
+  const t = ['Featured', 'All'];
+  const seen = new Set(t);
+  projects.forEach(p => (p.tags||[]).forEach(x => { if (!seen.has(x)) { t.push(x); seen.add(x); } }));
+  return t;
+}
+function filtered(list) {
+  if (activeFilter === 'All') return list;
+  if (activeFilter === 'Featured') return list.filter(isFeatured);
+  return list.filter(p => (p.tags||[]).includes(activeFilter));
+}
+function tagCount(tag) {
+  if (tag === 'All') return projects.length;
+  if (tag === 'Featured') return Math.min(FEATURED_COUNT, projects.length);
+  return projects.filter(p => (p.tags||[]).includes(tag)).length;
+}
+
+function renderFilterable() {
+  filterBar.innerHTML = '';
+  allTags().forEach(t => {
+    const c = document.createElement('button');
+    let cls = 'chip' + (t === activeFilter ? ' active' : '');
+    if (t === 'Featured') cls += ' featured';
+    c.className = cls;
+    const star = t === 'Featured' ? '<span class="star">★</span>' : '';
+    c.innerHTML = `${star}${t}<span class="ct">${tagCount(t)}</span>`;
+    c.addEventListener('click', () => { activeFilter = t; renderMode(); });
+    filterBar.appendChild(c);
+  });
+}
+
+function renderMode() {
+  renderFilterable();
+  grid.innerHTML = '';
+  filtered(projects).forEach((p) => {
+    const i = projects.indexOf(p);
+    const el = document.createElement('div');
+    el.className = 'pcard' + (p.feat ? ' feat' : '');
+    el.innerHTML = `
+      <div class="label">${p.label}</div>
+      <h3>${p.title}</h3>
+      <p>${p.desc}</p>
+      <div class="stack"><span class="b">●</span> ${p.stack}</div>
+      <div class="open" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 7h8M7 3l4 4-4 4"/></svg>
+      </div>
+    `;
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+    el.addEventListener('click', () => openCase(i));
+    grid.appendChild(el);
+  });
+}
+
+renderMode();
+
+// MODAL
+const modal = document.getElementById('modal');
+const mBody = document.getElementById('mBody');
+const mNum = document.getElementById('mNum');
+function openCase(i) {
+  const p = projects[i];
+  mNum.textContent = '0' + (i + 1);
+  mBody.innerHTML = `
+    <h2>${p.title.replace(/\.$/, '')} <span class="grad">${p.label.split('·')[0].trim().toLowerCase()}</span>.</h2>
+    <p class="lede">${p.desc}</p>
+    <div class="meta">
+      <div class="c"><div class="k">Year</div><div class="v">${p.year}</div></div>
+      <div class="c"><div class="k">Role</div><div class="v">${p.role}</div></div>
+      <div class="c"><div class="k">Stack</div><div class="v" style="font-family:'JetBrains Mono',monospace">${p.stack}</div></div>
+      <div class="c"><div class="k">Status</div><div class="v">${p.status}</div></div>
+    </div>
+    <div class="img">[ HERO IMAGE / DEMO LOOP ]</div>
+    <p>${p.body}</p>
+    <div class="row2" style="margin-top:32px">
+      <div class="img">[ system diagram ]</div>
+      <div class="img">[ result plot ]</div>
+    </div>
+    <p style="margin-top:32px"><span class="b">Takeaways.</span> Placeholder copy — three bullets about what you'd do differently next time, what surprised you, and what part of this is going on the resume.</p>
+    <p style="margin-top:32px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted)">→ github.com/${p.repo}</p>
+  `;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCase() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+modal.addEventListener('click', (e) => {
+  if (e.target.matches('[data-close]') || e.target === modal) closeCase();
+});
+addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCase(); });
+</script>
+</body>
+</html>
