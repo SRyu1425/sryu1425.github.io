@@ -68,7 +68,10 @@
     display: block;
   }
 
-  /* Spotlight — hero-only */
+  /* Spotlight — hero-only, dark mode only */
+  .spotlight { display: none; }
+  [data-theme="dark"] .spotlight { display: block; }
+
   .spotlight {
     position: absolute;
     pointer-events: none;
@@ -76,7 +79,7 @@
     top: 0; left: 0; right: 0; bottom: 0;
     background: radial-gradient(
       600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(42, 93, 138, 0.06),
+      rgba(42, 93, 138, 0.18),
       transparent 60%
     );
     opacity: 0;
@@ -116,8 +119,8 @@
     right: 32px;
     z-index: 150;
     background: var(--bg-2);
-    border: 1px solid var(--line);
-    color: var(--ink-2);
+    border: 1px solid var(--ink);
+    color: var(--ink);
     width: 48px; height: 48px;
     border-radius: 50%;
     cursor: pointer;
@@ -131,11 +134,11 @@
     transform: translateY(-4px);
     box-shadow: 0 15px 35px rgba(0,0,0,0.12);
   }
-  .theme-toggle svg { width: 20px; height: 20px; }
-  [data-theme="dark"] .sun-icon { display: block; }
+  .theme-toggle svg { width: 22px; height: 22px; stroke-width: 2.5; }
+  [data-theme="dark"] .sun-icon { display: block; fill: currentColor; }
   [data-theme="dark"] .moon-icon { display: none; }
   .sun-icon { display: none; }
-  .moon-icon { display: block; }
+  .moon-icon { display: block; fill: currentColor; }
 
   nav.top .inner {
     max-width: 1200px;
@@ -394,6 +397,25 @@
   .exp-left .company { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
   .exp-left .role { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 16px; }
   .exp-left .meta { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  .exp-logo {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 24px;
+    object-fit: contain;
+    filter: grayscale(1) opacity(0.6);
+    transition: all 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .exp-card:hover .exp-logo {
+    filter: grayscale(0) opacity(1);
+    transform: translateY(-2px);
+  }
+  /* Specific adjustment for Apple logo in dark mode */
+  [data-theme="dark"] .exp-logo.apple-logo { filter: grayscale(1) invert(1) opacity(0.7); }
+  [data-theme="dark"] .exp-card:hover .exp-logo.apple-logo { filter: grayscale(0) invert(1) opacity(1); }
+  /* Ensure Milwaukee red and P&G blue stay vibrant but slightly muted until hover */
+  [data-theme="dark"] .exp-logo { filter: grayscale(0.8) brightness(1.2) opacity(0.7); }
+  [data-theme="dark"] .exp-card:hover .exp-logo { filter: grayscale(0) brightness(1) opacity(1); }
   
   .exp-right ul { list-style: none; padding: 0; margin: 0 0 32px; }
   .exp-right li { font-size: 16px; margin-bottom: 12px; position: relative; padding-left: 20px; color: var(--ink-2); }
@@ -432,7 +454,7 @@
     cursor: pointer; position: relative;
     overflow: hidden; display: flex; flex-direction: column;
   }
-  .pcard:hover { 
+  .pcard:hover {
     background: var(--bg-3);
     border-color: var(--line);
     transform: translateY(-8px);
@@ -592,11 +614,11 @@
   @media (max-width: 900px) { .modal-hero, .modal-body { padding: 40px 32px; } }
   
   .m-meta {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    display: grid; grid-template-columns: 1fr 1fr 72px;
     gap: 1px; background: var(--line); border: 1px solid var(--line);
     border-radius: 16px; overflow: hidden; margin: 32px 0;
   }
-  .m-meta .c { background: var(--bg); padding: 20px; }
+  .m-meta .c { background: var(--bg); padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
   .m-meta .k { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
   .m-meta .v { font-size: 14px; font-weight: 500; }
   .m-img {
@@ -692,6 +714,7 @@
         <div class="glow-overlay"></div>
         <div class="exp-content">
           <div class="exp-left">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo" class="exp-logo apple-logo">
             <div class="company">Apple</div>
             <div class="role">Hardware Reliability Engineering Intern</div>
             <div class="meta">Feb – Aug 2026<br>Cupertino, CA</div>
@@ -713,6 +736,7 @@
         <div class="glow-overlay"></div>
         <div class="exp-content">
           <div class="exp-left">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Milwaukee_Logo.svg" alt="Milwaukee Tool Logo" class="exp-logo">
             <div class="company">Milwaukee Tool</div>
             <div class="role">Automation Engineering Intern</div>
             <div class="meta">Jun – Aug 2025<br>Menomonee Falls, WI</div>
@@ -735,6 +759,7 @@
         <div class="glow-overlay"></div>
         <div class="exp-content">
           <div class="exp-left">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/Procter_%26_Gamble_logo.svg" alt="P&G Logo" class="exp-logo">
             <div class="company">Procter & Gamble</div>
             <div class="role">Manufacturing Engineering Intern</div>
             <div class="meta">Jun – Aug 2024<br>Mehoopany, PA</div>
@@ -886,7 +911,7 @@ const progressBars = document.querySelectorAll('#stageProgress span');
 const stageCopy = [
   { project: "ROS 2 Vision Tracker", title: "Autonomous Vision Tracking", desc: "Real-time HSV color detection driving a Sphero Mini via ROS 2 and BLE." },
   { project: "Particle Filter Localization", title: "Monte Carlo Localization", desc: "Particle cloud converges to ground-truth pose through sequential importance resampling." },
-  { project: "Mobile Manipulator (CoppeliaSim)", title: "Pick & Place Control", desc: "youBot executing quintic trajectories with PI feedback in CoppeliaSim." }
+  { project: "Mobile Manipulator (CoppeliaSim)", title: "Pick & Place Control", desc: "KUKA youBot executing dynamic trajectories with PI feedback in CoppeliaSim." }
 ];
 const stageLabel = document.getElementById('stageLabel');
 
@@ -922,7 +947,7 @@ const projects = [
     stack: "ROS 2 · Python · OpenCV · BLE",
     year: "2025", role: "Solo",
     repo: "SRyu1425/ROS2-Computer-Vision-Tracker",
-    status: "Demoed",
+    concepts: "Pub/Sub Architecture · HSV Color Segmentation · Closed-Loop Control",
     body: "Real-time HSV masking pipeline detects the Sphero's position from a webcam feed, publishes velocity commands over ROS 2 topics, and drives the robot via BLE. Includes a Tkinter GUI for manual teleoperation and mode switching."
   },
   {
@@ -934,7 +959,7 @@ const projects = [
     stack: "Python · NumPy · Matplotlib",
     year: "2025", role: "Solo",
     repo: "SRyu1425/Particle-Filter-Localization",
-    status: "Complete",
+    concepts: "Monte Carlo Methods · Importance Resampling · Bayesian Estimation",
     video: "media/particleDemo.mov",
     body: "Built the full particle filter from scratch — motion model, measurement model with Gaussian landmark noise, and sequential importance resampling. Visualized particle cloud convergence over time with Matplotlib animations."
   },
@@ -947,7 +972,7 @@ const projects = [
     stack: "Python · NumPy · CoppeliaSim",
     year: "2025", role: "Solo",
     repo: "SRyu1425/Mobile_Manipulator_CoppeliaSim",
-    status: "Sim",
+    concepts: "Forward Kinematics · Quintic Time Scaling · Feedforward + PI Control",
     video: "media/newTask.mov",
     body: "Full pipeline: reference trajectory generation with quintic time scaling, feedforward + PI feedback controller, joint limit enforcement to avoid singularities. Outputs CSV trajectories visualized in CoppeliaSim."
   },
@@ -959,7 +984,7 @@ const projects = [
     stack: "C · Python · PIC32 · UART",
     year: "2024", role: "Solo",
     repo: "SRyu1425/Motor-Control-Project",
-    status: "Hardware",
+    concepts: "Cascaded PID · Current Sensing · Encoder Feedback",
     body: "Implemented nested PID loops on a PIC32 microcontroller. The inner loop regulates current via INA219 sensing; the outer loop tracks position from a Pico-based encoder reader over UART. Tuned gains empirically on the bench."
   },
   {
@@ -970,7 +995,7 @@ const projects = [
     stack: "Python · OpenCV · NumPy",
     year: "2024", role: "Solo",
     repo: "SRyu1425/Finger-Pen",
-    status: "Complete",
+    concepts: "Convexity Defects · Skin Segmentation · Kalman Filtering",
     body: "Skin color histogram + morphological ops isolate the hand. Convexity defect analysis identifies the fingertip. A Kalman filter smooths the drawing trajectory so strokes don't jitter."
   },
   {
@@ -981,7 +1006,7 @@ const projects = [
     stack: "Python · NumPy · SymPy",
     year: "2024", role: "Solo",
     repo: "SRyu1425/Jack-s-Game-Simulation",
-    status: "Complete",
+    concepts: "Euler-Lagrange · Rigid Body Dynamics · Impact Detection · SE(3)",
     body: "Derives equations of motion symbolically with SymPy, integrates numerically, and detects impacts between the jack's tips and the box walls using SE(3) transformations."
   },
   {
@@ -992,7 +1017,7 @@ const projects = [
     stack: "Python · NumPy",
     year: "2025", role: "Solo",
     repo: "",
-    status: "Complete",
+    concepts: "Graph Search · Heuristic Functions · PD Control",
     body: "Implemented A* and LRTA* using Chebyshev distance as a consistent heuristic on 1.0m and 0.1m resolution grids, verified against ground truth paths. Tuned a P/PD controller with acceleration limits to follow planned paths, correcting heading error before translational movement."
   },
   {
@@ -1003,7 +1028,7 @@ const projects = [
     stack: "Python · Raspberry Pi · A*",
     year: "2025", role: "Solo",
     repo: "",
-    status: "Complete",
+    concepts: "Occupancy Grids · Gait Synthesis · Autonomous Exploration",
     body: "Engineered a full navigation stack using grid-based mapping, localization, and A* path planning, allowing the robot to navigate through any maze. Calibrated ultrasonic sensor thresholds and fine-tuned 18-servo walking gaits for reliable autonomous exploration."
   },
   {
@@ -1014,7 +1039,7 @@ const projects = [
     stack: "Python · Raspberry Pi",
     year: "2025", role: "Solo",
     repo: "",
-    status: "Complete",
+    concepts: "Polynomial Regression · Bias-Variance Tradeoff · Servo Calibration",
     body: "Developed multiple polynomial regression models to correct forward-walk drift through dynamic servo adjustments. Optimized weight parameters and polynomial degree by minimizing MSE across 1D and 2D input spaces to reduce overfitting."
   },
   {
@@ -1025,7 +1050,7 @@ const projects = [
     stack: "C++ · Arduino",
     year: "2024", role: "Solo",
     repo: "",
-    status: "Complete",
+    concepts: "IR Sensing · Differential Drive · Reactive Control",
     body: "IR beacon transceiver tracks and follows a moving beacon source with dynamic motion control. Ultrasound sensor enables obstacle detection and automatic stops for safe navigation."
   },
   {
@@ -1036,7 +1061,7 @@ const projects = [
     stack: "Python · C · Raspberry Pi Pico",
     year: "2024", role: "Solo",
     repo: "",
-    status: "Complete",
+    concepts: "PID Motor Control · Image Processing · PWM",
     body: "Integrated mechanics, electronics, and software on Raspberry Pi Pico and Zero with PWM-based PID motor control and real-time image processing. 3D-printed chassis and wheels designed with CAD and rapid prototyping."
   },
   {
@@ -1047,7 +1072,7 @@ const projects = [
     stack: "Python · AWS Lambda · SQL · RDS",
     year: "2024", role: "Solo",
     repo: "",
-    status: "Complete",
+    concepts: "REST APIs · Cloud Architecture · Geospatial Queries",
     body: "Automated data retrieval and processing to provide closest stops, routes, and travel times. Built a scalable SQL database in AWS RDS and integrated third-party APIs through AWS Lambda to handle high-frequency, location-based queries."
   },
   {
@@ -1058,7 +1083,7 @@ const projects = [
     stack: "SolidWorks · MATLAB · FEA",
     year: "2022–Present", role: "Team Member",
     repo: "",
-    status: "Ongoing",
+    concepts: "FEA · Unsprung Mass Optimization · Brake Bias",
     body: "Optimized brake rotor and rear upright designs with CAD and validated safety factors through FEA, reducing unsprung mass by 10%. Refined a MATLAB program to simulate braking scenarios and document caliper/master cylinder specifications. Assembled remote brake fluid reservoirs to increase fluid capacity by 80%."
   },
 ];
@@ -1168,13 +1193,13 @@ function openModal(p, i) {
     </div>
     <div class="modal-body">
       <div class="m-meta">
-        <div class="c"><div class="k">Year</div><div class="v">${p.year}</div></div>
+        <div class="c"><div class="k">Concepts</div><div class="v">${p.concepts}</div></div>
         <div class="c"><div class="k">Stack</div><div class="v">${p.stack}</div></div>
-        <div class="c"><div class="k">Status</div><div class="v">${p.status}</div></div>
+        <div class="c"><div class="k">Year</div><div class="v">${p.year}</div></div>
       </div>
       ${p.video ? `<video autoplay muted loop playsinline style="width:100%;border-radius:12px;margin:32px 0;border:1px solid var(--line);display:block;"><source src="${p.video}" type="video/quicktime"><source src="${p.video}"></video>` : ''}
       <p style="font-size: 18px; color: var(--ink-2); max-width: 60ch;">${p.body}</p>
-      ${p.repo ? `<p style="margin-top: 40px; font-size: 13px; font-weight: 600; color: var(--accent);">→ github.com/${p.repo}</p>` : ''}
+      ${p.repo ? `<a href="https://github.com/${p.repo}" target="_blank" rel="noreferrer" style="display:inline-block;margin-top:40px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;">→ github.com/${p.repo}</a>` : ''}
     </div>
   `;
   modal.classList.add('open');
