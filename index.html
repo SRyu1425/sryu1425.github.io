@@ -19,6 +19,21 @@
     --line-2: rgba(0, 0, 0, 0.03);
     --accent: #2A5D8A;
     --accent-2: #4A8CC2;
+    --nav-bg: rgba(253, 252, 251, 0.75);
+  }
+  
+  [data-theme="dark"] {
+    --bg: #0F1115;
+    --bg-2: #16191E;
+    --bg-3: #1C2128;
+    --ink: #F0F6FC;
+    --ink-2: #8B949E;
+    --muted: #484F58;
+    --line: rgba(255, 255, 255, 0.1);
+    --line-2: rgba(255, 255, 255, 0.05);
+    --accent: #58A6FF;
+    --accent-2: #79C0FF;
+    --nav-bg: rgba(15, 17, 21, 0.75);
   }
   
   *,*::before,*::after { box-sizing: border-box; }
@@ -32,6 +47,7 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    transition: background-color 400ms ease, color 400ms ease;
   }
 
   /* --- TYPOGRAPHY --- */
@@ -73,9 +89,54 @@
     top: 0; left: 0; right: 0;
     z-index: 100;
     backdrop-filter: blur(24px) saturate(180%);
-    background: rgba(253, 252, 251, 0.75);
+    background: var(--nav-bg);
     border-bottom: 1px solid var(--line);
   }
+  
+  /* Global Spotlight (Dark Mode Only) */
+  .global-spotlight {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50; /* Above content, below navigation */
+    background: radial-gradient(
+      800px circle at var(--gx, 50%) var(--gy, 50%),
+      rgba(88, 166, 255, 0.15),
+      transparent 80%
+    );
+    opacity: 0;
+    transition: opacity 600ms;
+  }
+  [data-theme="dark"] .global-spotlight { opacity: 1; }
+
+  /* Theme Toggle (Floating) */
+  .theme-toggle {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 150;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+  }
+  .theme-toggle svg { width: 20px; height: 20px; }
+  [data-theme="dark"] .sun-icon { display: block; }
+  [data-theme="dark"] .moon-icon { display: none; }
+  .sun-icon { display: none; }
+  .moon-icon { display: block; }
+
   nav.top .inner {
     max-width: 1200px;
     margin: 0 auto;
@@ -83,6 +144,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
   nav.top .name {
     font-size: 14px;
@@ -92,7 +158,9 @@
     gap: 10px;
     text-decoration: none;
     color: inherit;
+    transition: color 200ms;
   }
+  nav.top .name:hover { color: var(--accent); }
   nav.top .name .dot {
     width: 6px; height: 6px;
     border-radius: 50%;
@@ -235,17 +303,19 @@
     text-transform: uppercase;
     z-index: 10;
   }
-  .stage-canvas .label .dot { 
-    display: inline-block; width: 6px; height: 6px; 
+  .stage-canvas .label .dot {
+    display: inline-block; width: 6px; height: 6px;
     background: var(--accent); border-radius: 50%; margin-right: 8px; vertical-align: 1px;
+    animation: breathe 3s ease-in-out infinite;
   }
 
   .scene {
     position: absolute; inset: 0;
-    opacity: 0; 
+    opacity: 0;
     transform: scale(1.05);
     transition: opacity 600ms cubic-bezier(0.23, 1, 0.32, 1), transform 800ms cubic-bezier(0.23, 1, 0.32, 1);
     display: grid; place-items: center;
+    padding-bottom: 130px;
   }
   .scene.active { opacity: 1; transform: scale(1); }
 
@@ -347,7 +417,7 @@
     display: flex; align-items: center; gap: 8px;
   }
   .filters .chip:hover { border-color: var(--muted); color: var(--ink); }
-  .filters .chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .filters .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
   .filters .chip .ct { opacity: 0.5; font-size: 9px; }
 
   .project-grid {
@@ -367,8 +437,14 @@
     border-color: var(--line);
     transform: translateY(-8px);
   }
-  .pcard.feat { grid-column: span 2; padding: 56px; }
+  .pcard.feat { grid-column: span 2; padding: 48px 56px; }
   @media (max-width: 900px) { .pcard.feat { grid-column: auto; padding: 40px; } }
+  .feat-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 64px; height: 100%; }
+  .feat-left { flex: 1; }
+  .feat-left h3 { font-size: 36px; margin: 0 0 16px; }
+  .feat-left p { color: var(--ink-2); font-size: 16px; margin: 0; max-width: 50ch; }
+  .feat-right { display: flex; flex-direction: column; align-items: flex-end; gap: 24px; flex-shrink: 0; }
+  @media (max-width: 900px) { .feat-inner { flex-direction: column; align-items: flex-start; gap: 24px; } .feat-right { align-items: flex-start; } }
   .pcard .cat { font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 16px; display: block; }
   .pcard h3 { font-size: 32px; margin: 0 0 16px; }
   .pcard p { color: var(--ink-2); font-size: 16px; margin-bottom: 32px; max-width: 45ch; }
@@ -405,7 +481,7 @@
   }
   .about-body p {
     font-size: 20px; line-height: 1.6; color: var(--ink);
-    max-width: 36ch; margin: 0 0 24px; letter-spacing: -0.01em;
+    max-width: 45ch; margin: 0 0 24px; letter-spacing: -0.01em;
   }
   .about-body p .b { color: var(--accent); font-weight: 600; }
   .about-links { margin-top: 40px; display: flex; gap: 12px; flex-wrap: wrap; }
@@ -532,10 +608,13 @@
 </style>
 </head>
 <body>
+<div class="global-spotlight"></div>
 
 <nav class="top">
   <div class="inner">
-    <a href="#" class="name"><span class="dot"></span>Siwon Ryu</a>
+    <div class="nav-left">
+      <a href="#" class="name"><span class="dot"></span>Siwon Ryu</a>
+    </div>
     <div class="links">
       <a href="#experience" class="link">Experience</a>
       <a href="#work" class="link">Projects</a>
@@ -562,43 +641,27 @@
 <div class="stage-wrap" id="showcase">
   <div class="stage">
     <div class="stage-canvas">
-      <div class="label"><span class="dot"></span> System Status: Nominal</div>
+      <div class="label"><span class="dot"></span><span id="stageLabel">ROS 2 Vision Tracker</span></div>
 
       <div class="scene scene-1 active">
-        <svg viewBox="0 0 400 300">
-          <line class="frame" x1="50" y1="250" x2="350" y2="250" />
-          <path class="link" d="M200 250 L200 180 L280 120 L320 150" stroke-width="4" stroke="var(--line)" />
-          <circle class="joint" cx="200" cy="250" r="8" />
-          <circle class="joint" cx="200" cy="180" r="6" />
-          <circle class="joint" cx="280" cy="120" r="6" />
-          <text x="210" y="245" fill="var(--muted)" font-size="8" font-family="JetBrains Mono">BASE_JOINT</text>
-        </svg>
+        <video autoplay muted loop playsinline preload="auto" style="max-height:340px;max-width:100%;border-radius:8px;object-fit:contain;">
+          <source src="media/SpheroDemo.mov" type="video/quicktime">
+          <source src="media/SpheroDemo.mov">
+        </video>
       </div>
 
       <div class="scene scene-2">
-        <div class="axes">
-          <svg viewBox="0 0 800 400">
-            <line x1="50" y1="350" x2="750" y2="350" stroke="var(--line)" />
-            <line x1="50" y1="350" x2="50" y2="50" stroke="var(--line)" />
-            <path d="M 50 200 L 750 200" stroke="var(--accent)" stroke-dasharray="8 4" opacity="0.3" />
-            <path d="M 50 350 Q 150 50, 250 180 T 450 200 L 750 200" fill="none" stroke="var(--accent)" stroke-width="3" />
-            <text x="710" y="370" fill="var(--muted)" font-family="JetBrains Mono" font-size="12">TIME</text>
-            <text x="60" y="45" fill="var(--muted)" font-family="JetBrains Mono" font-size="12">ERROR</text>
-          </svg>
-        </div>
+        <video autoplay muted loop playsinline preload="auto" style="max-height:340px;max-width:100%;border-radius:8px;object-fit:contain;">
+          <source src="media/particleDemo.mov" type="video/quicktime">
+          <source src="media/particleDemo.mov">
+        </video>
       </div>
 
       <div class="scene scene-3">
-        <div class="pcl" id="stagePcl"></div>
-      </div>
-
-      <div class="scene scene-4">
-        <div class="terminal-box">
-          <div style="color: #7EE787">siwon@robot:~$ ros2 launch portfolio_bringup.py</div>
-          <div style="color: #8B949E">[INFO] Initializing EKF...</div>
-          <div style="color: #8B949E">[INFO] Perception nodes online.</div>
-          <div style="color: #D2A8FF">[SUCCESS] System ready.</div>
-        </div>
+        <video autoplay muted loop playsinline preload="auto" style="max-height:340px;max-width:100%;border-radius:8px;object-fit:contain;">
+          <source src="media/newTask.mov" type="video/quicktime">
+          <source src="media/newTask.mov">
+        </video>
       </div>
 
       <div class="stage-text">
@@ -608,9 +671,9 @@
         </div>
       </div>
 
-      <div class="stage-counter"><span id="stageNum">01</span> / 04</div>
+      <div class="stage-counter"><span id="stageNum">01</span> / 03</div>
       <div class="stage-progress" id="stageProgress">
-        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span>
       </div>
     </div>
   </div>
@@ -629,20 +692,19 @@
         <div class="glow-overlay"></div>
         <div class="exp-content">
           <div class="exp-left">
-            <div class="company">Acme Robotics Co.</div>
-            <div class="role">Robotics Software Intern</div>
-            <div class="meta">Jun – Aug 2025<br>San Francisco, CA</div>
+            <div class="company">Apple</div>
+            <div class="role">Hardware Reliability Engineering Intern</div>
+            <div class="meta">Feb – Aug 2026<br>Cupertino, CA</div>
           </div>
           <div class="exp-right">
             <ul>
-              <li>Built a <b>real-time perception pipeline</b> for tabletop object detection — 40% latency reduction over baseline.</li>
-              <li>Integrated a <b>force-torque sensor</b> into the grasp controller for compliant manipulation.</li>
-              <li>Wrote MuJoCo fixtures to stress-test edge cases before hardware deployment.</li>
+              <li>Automated a <b>3-day manual data pipeline down to minutes</b> by integrating cross-functional data source APIs and designing a UI/UX optimized for quick adoption.</li>
+              <li>Developed a <b>sentiment analysis tool</b> using open-source libraries and agentic workflow, replacing hours of manual research with a repeatable automated process.</li>
+              <li>Building a <b>computer vision pipeline</b> on high-speed video footage to automatically classify hardware impact types using segmentation models (SAM 3).</li>
             </ul>
             <div class="stack">
-              <span class="tag">ROS 2</span><span class="tag">Python</span><span class="tag">C++</span><span class="tag">MuJoCo</span><span class="tag">PyTorch</span>
+              <span class="tag">Python</span><span class="tag">Computer Vision</span><span class="tag">SAM 3</span><span class="tag">NLP</span>
             </div>
-            <div class="outcome">↳ Shipped in firmware v2.4</div>
           </div>
         </div>
       </div>
@@ -651,19 +713,20 @@
         <div class="glow-overlay"></div>
         <div class="exp-content">
           <div class="exp-left">
-            <div class="company">Example Systems</div>
-            <div class="role">Controls Engineering Intern</div>
-            <div class="meta">May – Aug 2024<br>Boston, MA</div>
+            <div class="company">Milwaukee Tool</div>
+            <div class="role">Automation Engineering Intern</div>
+            <div class="meta">Jun – Aug 2025<br>Menomonee Falls, WI</div>
           </div>
           <div class="exp-right">
             <ul>
-              <li>Designed and tuned a <b>model-predictive controller</b> for a 3-DoF planar arm — 25% settling time improvement.</li>
-              <li>Built a hardware-in-the-loop test bench automating overnight regression runs against Simulink ground truth.</li>
+              <li>Automated data workflows using Python, Pandas, and SQL, <b>saving 60+ hours/week</b> in manual processing while improving data accuracy for global engineering teams.</li>
+              <li>Redesigned HMI logic and rewired electronic controls to <b>extend dust chamber test cycles by 25%</b>, reducing manual configuration time.</li>
+              <li>Developed new SLS filtration systems for dust ingress testing chambers, <b>cutting maintenance time by ~90%</b>.</li>
+              <li>Engineered new electrical control system integrating a digital timer relay and proprietary controllers to increase testing versatility.</li>
             </ul>
             <div class="stack">
-              <span class="tag">MATLAB</span><span class="tag">Simulink</span><span class="tag">Python</span><span class="tag">Eigen</span><span class="tag">STM32</span>
+              <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">SQL</span><span class="tag">PLC</span><span class="tag">HMI</span>
             </div>
-            <div class="outcome">↳ MPC shipped to two product lines</div>
           </div>
         </div>
       </div>
@@ -672,19 +735,19 @@
         <div class="glow-overlay"></div>
         <div class="exp-content">
           <div class="exp-left">
-            <div class="company">Placeholder Labs</div>
-            <div class="role">Research Intern</div>
-            <div class="meta">Jan – Apr 2024<br>Remote</div>
+            <div class="company">Procter & Gamble</div>
+            <div class="role">Manufacturing Engineering Intern</div>
+            <div class="meta">Jun – Aug 2024<br>Mehoopany, PA</div>
           </div>
           <div class="exp-right">
             <ul>
-              <li>Implemented a <b>sim-to-real transfer pipeline</b> for legged locomotion via domain randomization.</li>
-              <li>Ran ablation studies across reward formulations; results shaped the next experiment cycle.</li>
+              <li>Designed and fabricated a retrofitted core reworker, <b>boosting efficiency by 5×</b> while complying with site safety requirements.</li>
+              <li>Led cross-functional teams to optimize a new operational area, resulting in <b>projected annual savings of $450,000</b>.</li>
+              <li>Developed an automated Excel/VBA program optimizing 600,000+ sq ft of warehouse storage, <b>cutting $30K/month</b> in trailer detention costs.</li>
             </ul>
             <div class="stack">
-              <span class="tag">PyTorch</span><span class="tag">Isaac Gym</span><span class="tag">Python</span><span class="tag">W&amp;B</span>
+              <span class="tag">Excel</span><span class="tag">VBA</span><span class="tag">CAD</span>
             </div>
-            <div class="outcome">↳ Submitted to ICRA 2025 workshop</div>
           </div>
         </div>
       </div>
@@ -716,8 +779,9 @@
         <img src="media/headshot.png" alt="Siwon Ryu">
       </div>
       <div class="about-body">
-        <p>BS/MS robotics engineering student — the full stack: <span class="b">sensing, estimation, planning, control</span>.</p>
-        <p>Looking for a <span class="b">summer 2026 internship</span> on a team where the robot leaves the lab.</p>
+        <p>I'm Siwon, a Northwestern student ('27) pursuing a BS in <span class="b">Mechanical Engineering</span> and an MS in <span class="b">Computer Science</span>.</p>
+        <p>My background has given me a strong foundation in both <span class="b">hardware and software</span>. With robotics, I can use my experience in both fields and work at the intersection between them, which to me is the most fun.</p>
+        <p>In my free time, you can usually find me playing the drums or piano, playing basketball, or watching MMA.</p>
         <div class="about-links">
           <a class="about-icon" href="mailto:siwonryu1425@gmail.com" aria-label="Email Siwon Ryu" title="Email">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -727,14 +791,16 @@
             <span class="sr-only">Email</span>
           </a>
           <a class="about-icon" href="https://www.linkedin.com/in/siwonryu1425" target="_blank" rel="noreferrer" aria-label="LinkedIn profile" title="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M6.94 8.98H3.86V20h3.08V8.98ZM7.2 5.58c0-.9-.72-1.58-1.78-1.58-1.04 0-1.78.68-1.78 1.58 0 .88.72 1.58 1.74 1.58h.02c1.08 0 1.8-.7 1.8-1.58ZM20.36 13.68c0-3.32-1.78-4.86-4.14-4.86-1.9 0-2.76 1.04-3.24 1.78V8.98H9.9c.04 1.04 0 11.02 0 11.02h3.08v-6.16c0-.32.02-.66.12-.88.26-.66.86-1.34 1.86-1.34 1.32 0 1.84 1 1.84 2.46V20h3.08v-6.32h.48Z"></path>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+              <rect x="2" y="9" width="4" height="12"></rect>
+              <circle cx="4" cy="4" r="2"></circle>
             </svg>
             <span class="sr-only">LinkedIn</span>
           </a>
           <a class="about-icon" href="https://github.com/SRyu1425" target="_blank" rel="noreferrer" aria-label="GitHub profile" title="GitHub">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 2.25c-5.38 0-9.75 4.36-9.75 9.75 0 4.3 2.8 7.96 6.68 9.25.49.09.67-.21.67-.47v-1.8c-2.72.59-3.29-1.16-3.29-1.16-.44-1.13-1.08-1.43-1.08-1.43-.89-.61.07-.6.07-.6.98.07 1.5 1.01 1.5 1.01.87 1.49 2.28 1.06 2.84.81.09-.63.34-1.06.62-1.3-2.17-.25-4.45-1.09-4.45-4.83 0-1.07.38-1.94 1.01-2.62-.1-.25-.44-1.24.1-2.58 0 0 .82-.26 2.68 1 .78-.22 1.61-.33 2.44-.33.83 0 1.66.11 2.44.33 1.86-1.26 2.68-1 2.68-1 .54 1.34.2 2.33.1 2.58.63.68 1.01 1.55 1.01 2.62 0 3.75-2.29 4.58-4.47 4.82.35.3.66.9.66 1.82v2.7c0 .26.18.57.68.47A9.76 9.76 0 0 0 21.75 12c0-5.39-4.37-9.75-9.75-9.75Z"></path>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
             </svg>
             <span class="sr-only">GitHub</span>
           </a>
@@ -758,6 +824,11 @@
   © 2026 Siwon Ryu
 </footer>
 
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+  <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+</button>
+
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
@@ -767,6 +838,30 @@
 </div>
 
 <script>
+// THEME TOGGLE
+const themeToggle = document.getElementById('themeToggle');
+const globalSpotlight = document.querySelector('.global-spotlight');
+const currentTheme = localStorage.getItem('theme');
+
+if (currentTheme) {
+  document.documentElement.setAttribute('data-theme', currentTheme);
+} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+}
+
+themeToggle.addEventListener('click', () => {
+  let theme = document.documentElement.getAttribute('data-theme');
+  let newTheme = theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+});
+
+// GLOBAL SPOTLIGHT TRACKING
+document.addEventListener('mousemove', (e) => {
+  globalSpotlight.style.setProperty('--gx', e.clientX + 'px');
+  globalSpotlight.style.setProperty('--gy', e.clientY + 'px');
+});
+
 // SPOTLIGHT
 const spotlight = document.querySelector('.spotlight');
 const hero = document.querySelector('.hero');
@@ -789,22 +884,23 @@ const stageNum = document.getElementById('stageNum');
 const progressBars = document.querySelectorAll('#stageProgress span');
 
 const stageCopy = [
-  { title: "Kinematics & Dynamics", desc: "Modeling multi-link systems for predictable real-world behavior." },
-  { title: "State Estimation", desc: "Closing the loop with robust sensor fusion and filtering." },
-  { title: "Point Cloud Processing", desc: "Perceiving the environment with structured depth data." },
-  { title: "Integrated Systems", desc: "Deployment-ready software stacks built on ROS 2." }
+  { project: "ROS 2 Vision Tracker", title: "Autonomous Vision Tracking", desc: "Real-time HSV color detection driving a Sphero Mini via ROS 2 and BLE." },
+  { project: "Particle Filter Localization", title: "Monte Carlo Localization", desc: "Particle cloud converges to ground-truth pose through sequential importance resampling." },
+  { project: "Mobile Manipulator (CoppeliaSim)", title: "Pick & Place Control", desc: "youBot executing quintic trajectories with PI feedback in CoppeliaSim." }
 ];
+const stageLabel = document.getElementById('stageLabel');
 
 function updateStage() {
   const r = stageWrap.getBoundingClientRect();
   const total = stageWrap.offsetHeight - innerHeight;
   const p = Math.max(0, Math.min(1, -r.top / total));
-  const idx = Math.min(3, Math.floor(p * 4));
-  const localP = (p * 4) - idx;
+  const idx = Math.min(2, Math.floor(p * 3));
+  const localP = (p * 3) - idx;
 
   scenes.forEach((s, i) => s.classList.toggle('active', i === idx));
   stageTitle.textContent = stageCopy[idx].title;
   stageDesc.textContent = stageCopy[idx].desc;
+  stageLabel.textContent = stageCopy[idx].project;
   stageNum.textContent = '0' + (idx + 1);
 
   progressBars.forEach((b, i) => {
@@ -815,83 +911,210 @@ function updateStage() {
 }
 window.addEventListener('scroll', updateStage, { passive: true });
 
-// STRUCTURED PCL
-const pcl = document.getElementById('stagePcl');
-for(let i=0; i<150; i++) {
-  const pt = document.createElement('div');
-  pt.className = 'pt';
-  pt.style.left = Math.random() * 100 + '%';
-  pt.style.top = (60 + Math.random() * 30) + '%';
-  pt.style.opacity = (0.2 + Math.random() * 0.3).toFixed(2);
-  pcl.appendChild(pt);
-}
-for(let i=0; i<50; i++) {
-  const pt = document.createElement('div');
-  pt.className = 'pt';
-  pt.style.left = (40 + Math.random() * 20) + '%';
-  pt.style.top = (40 + Math.random() * 20) + '%';
-  pt.style.backgroundColor = 'var(--accent-2)';
-  pt.style.boxShadow = '0 0 5px var(--accent-2)';
-  pcl.appendChild(pt);
-}
-
 // PROJECTS DATA
 const projects = [
   {
     feat: true,
-    title: "Bipedal walker, in sim.",
-    label: "RL · Dynamics · 2026",
-    tags: ["RL", "Sim"],
-    desc: "Sim-to-real PPO controller for a 2-link biped on uneven terrain. 32M timesteps in MuJoCo, Gazebo URDF for cross-validation.",
-    stack: "PyTorch · MuJoCo · ROS 2",
-    year: "2026", role: "Solo · 6 months",
-    repo: "SRyu1425/bipedal-walker",
-    status: "Sim only — hardware up next",
-    body: "Reward shaping was the trick — energy minimization plus uprightness plus forward progress, weighted carefully so the policy didn't just throw itself across the finish line. <b>32M timesteps</b> in MuJoCo, then a Gazebo URDF round-trip to validate."
-  },
-  {
-    title: "Mobile manipulator pickup.",
-    label: "Motion · 2025",
-    tags: ["Manipulation", "Perception"],
-    desc: "Holonomic base + 6-DoF arm doing object handoff with a person at the bench.",
-    stack: "ROS 2 · MoveIt 2",
-    year: "2025", role: "Team of 3",
-    repo: "SRyu1425/mobile-manip",
-    status: "Demoed at open house",
-    body: "End-to-end pipeline: RealSense point cloud → tabletop segmentation → ICP pose → MoveIt motion plan → Cartesian approach with force-stop."
-  },
-  {
-    title: "EKF localization.",
-    label: "Estimation · 2025",
-    tags: ["Estimation"],
-    desc: "Wheel + IMU + AprilTag-aided EKF, written from scratch in C++ on a TurtleBot.",
-    stack: "C++17 · Eigen",
-    year: "2025", role: "Solo",
-    repo: "SRyu1425/ekf-loc",
-    status: "Shipped",
-    body: "Implemented predict/update from scratch and tuned process and measurement noise from logged data, not the textbook."
-  },
-  {
-    title: "F1Tenth racing stack.",
-    label: "Autonomy · 2024",
+    title: "ROS 2 Vision Tracker",
+    label: "Autonomy · Perception",
     tags: ["Autonomy", "Perception"],
-    desc: "1/10-scale racing — wall-following → pure-pursuit raceline → reactive obstacle avoid.",
-    stack: "ROS 2 · LiDAR",
-    year: "2024", role: "Team of 4",
-    repo: "SRyu1425/f1tenth",
-    status: "3rd at regional",
-    body: "We placed third at the regional meet. The reactive layer was follow-the-gap with velocity tied to lookahead error. We held everything together with launch files."
+    desc: "Autonomous color-tracking system for a Sphero Mini using ROS 2, OpenCV HSV detection, and BLE control.",
+    stack: "ROS 2 · Python · OpenCV · BLE",
+    year: "2025", role: "Solo",
+    repo: "SRyu1425/ROS2-Computer-Vision-Tracker",
+    status: "Demoed",
+    body: "Real-time HSV masking pipeline detects the Sphero's position from a webcam feed, publishes velocity commands over ROS 2 topics, and drives the robot via BLE. Includes a Tkinter GUI for manual teleoperation and mode switching."
   },
   {
-    title: "Quadruped trot.",
-    label: "Gaits · 2024",
-    tags: ["Gaits", "Sim"],
-    desc: "Hopf-oscillator central pattern generator on a 12-DoF quadruped sim.",
-    stack: "Python · Gazebo",
-    year: "2024", role: "Solo",
-    repo: "SRyu1425/cpg-trot",
+    feat: true,
+    title: "Particle Filter Localization",
+    label: "Estimation",
+    tags: ["Estimation"],
+    desc: "Monte Carlo localization fusing noisy odometry and landmark measurements to track a robot's 2D pose.",
+    stack: "Python · NumPy · Matplotlib",
+    year: "2025", role: "Solo",
+    repo: "SRyu1425/Particle-Filter-Localization",
+    status: "Complete",
+    video: "media/particleDemo.mov",
+    body: "Built the full particle filter from scratch — motion model, measurement model with Gaussian landmark noise, and sequential importance resampling. Visualized particle cloud convergence over time with Matplotlib animations."
+  },
+  {
+    feat: true,
+    title: "Mobile Manipulator (CoppeliaSim)",
+    label: "Manipulation · Sim",
+    tags: ["Manipulation", "Sim"],
+    desc: "youBot pick-and-place with quintic trajectory generation and PI feedback control in CoppeliaSim.",
+    stack: "Python · NumPy · CoppeliaSim",
+    year: "2025", role: "Solo",
+    repo: "SRyu1425/Mobile_Manipulator_CoppeliaSim",
     status: "Sim",
-    body: "Less impressive than RL, but I learned more about <b>feet-on-ground dynamics</b> doing it this way than from any paper."
+    video: "media/newTask.mov",
+    body: "Full pipeline: reference trajectory generation with quintic time scaling, feedforward + PI feedback controller, joint limit enforcement to avoid singularities. Outputs CSV trajectories visualized in CoppeliaSim."
+  },
+  {
+    title: "Dual-Loop Motor Control",
+    label: "Controls · Embedded",
+    tags: ["Controls", "Embedded"],
+    desc: "PID inner current loop and outer position loop on a PIC32 with Raspberry Pi Pico encoder reading and INA219 current sensing.",
+    stack: "C · Python · PIC32 · UART",
+    year: "2024", role: "Solo",
+    repo: "SRyu1425/Motor-Control-Project",
+    status: "Hardware",
+    body: "Implemented nested PID loops on a PIC32 microcontroller. The inner loop regulates current via INA219 sensing; the outer loop tracks position from a Pico-based encoder reader over UART. Tuned gains empirically on the bench."
+  },
+  {
+    title: "Finger Pen",
+    label: "Perception · CV",
+    tags: ["Perception"],
+    desc: "Real-time air drawing via webcam using hand gesture recognition, convexity defects, and Kalman filtering.",
+    stack: "Python · OpenCV · NumPy",
+    year: "2024", role: "Solo",
+    repo: "SRyu1425/Finger-Pen",
+    status: "Complete",
+    body: "Skin color histogram + morphological ops isolate the hand. Convexity defect analysis identifies the fingertip. A Kalman filter smooths the drawing trajectory so strokes don't jitter."
+  },
+  {
+    title: "Jack's Game Simulation",
+    label: "Dynamics · Sim",
+    tags: ["Sim"],
+    desc: "Physics-based 2D rigid body simulator of a bouncing jack inside an oscillating box using Euler-Lagrange mechanics.",
+    stack: "Python · NumPy · SymPy",
+    year: "2024", role: "Solo",
+    repo: "SRyu1425/Jack-s-Game-Simulation",
+    status: "Complete",
+    body: "Derives equations of motion symbolically with SymPy, integrates numerically, and detects impacts between the jack's tips and the box walls using SE(3) transformations."
+  },
+  {
+    title: "Mechatronics Lab",
+    label: "Embedded · Controls",
+    tags: ["Controls", "Embedded"],
+    desc: "Embedded systems projects on Raspberry Pi Pico covering ADC, PWM, I2C, UART, FIR/IIR filtering, FFT, and proportional control.",
+    stack: "C · Python · Raspberry Pi Pico",
+    year: "2024", role: "Solo",
+    repo: "SRyu1425/Mechatronics",
+    status: "Complete",
+    body: "Series of lab assignments covering low-level peripheral programming in C and signal processing in Python — FIR/IIR filter design, FFT analysis, and a closed-loop proportional controller for motor speed."
+  },
+  {
+    title: "Tic Tac Toe AI",
+    label: "AI",
+    tags: ["AI"],
+    desc: "Unbeatable terminal Tic Tac Toe AI using Minimax with Alpha-Beta pruning.",
+    stack: "Python",
+    year: "2023", role: "Solo",
+    repo: "SRyu1425/Tic-Tac-Toe-AI",
+    status: "Complete",
+    body: "Classic Minimax implementation with Alpha-Beta pruning for efficiency. Supports human vs AI and AI vs AI modes."
+  },
+  {
+    title: "2048",
+    label: "Software",
+    tags: ["Software"],
+    desc: "C++ implementation of the 2048 puzzle game with MVC architecture and custom graphics.",
+    stack: "C++",
+    year: "2023", role: "Solo",
+    repo: "SRyu1425/Game-2048",
+    status: "Complete",
+    body: "Built using MVC pattern with a custom game engine handling tile merging, keyboard input, and rendering."
+  },
+  {
+    title: "A* Path Planner & Controller",
+    label: "Autonomy · Controls",
+    tags: ["Autonomy", "Controls"],
+    desc: "A* and LRTA* on occupancy grid maps with a P/PD controller to follow planned paths on a noisy motion model.",
+    stack: "Python · NumPy",
+    year: "2025", role: "Solo",
+    repo: "",
+    status: "Complete",
+    body: "Implemented A* and LRTA* using Chebyshev distance as a consistent heuristic on 1.0m and 0.1m resolution grids, verified against ground truth paths. Tuned a P/PD controller with acceleration limits to follow planned paths, correcting heading error before translational movement."
+  },
+  {
+    title: "Emoji Autoencoder",
+    label: "AI · Deep Learning",
+    tags: ["AI"],
+    desc: "Convolutional autoencoder that reconstructs, denoises, and does latent-space arithmetic on facial emojis.",
+    stack: "Python · PyTorch · HuggingFace",
+    year: "2025", role: "Solo",
+    repo: "",
+    status: "Complete",
+    body: "Trained on the HuggingFace emoji dataset. Manipulated latent-space representations with vector arithmetic to synthesize new emojis as blends of others. Integrated a compact classifier into the autoencoder framework to distinguish smiling vs non-smiling faces."
+  },
+  {
+    title: "PyTorch Neural Network Classifier",
+    label: "AI · Deep Learning",
+    tags: ["AI"],
+    desc: "Multi-layer perceptron achieving near-perfect XOR separation and >90% accuracy on spiral datasets.",
+    stack: "Python · PyTorch · NumPy",
+    year: "2025", role: "Solo",
+    repo: "",
+    status: "Complete",
+    body: "Implemented an orthogonality regularizer that cut validation loss ~20% and yielded better decision surfaces. Achieves near-perfect separation on XOR and >90% accuracy on challenging spiral data."
+  },
+  {
+    title: "Hexapod Navigation & Mapping",
+    label: "Autonomy · Embedded",
+    tags: ["Autonomy", "Embedded"],
+    desc: "Hexapod robot with grid-based mapping, A* path planning, and ultrasonic obstacle detection on Raspberry Pi.",
+    stack: "Python · Raspberry Pi · A*",
+    year: "2025", role: "Solo",
+    repo: "",
+    status: "Complete",
+    body: "Engineered a full navigation stack using grid-based mapping, localization, and A* path planning, allowing the robot to navigate through any maze. Calibrated ultrasonic sensor thresholds and fine-tuned 18-servo walking gaits for reliable autonomous exploration."
+  },
+  {
+    title: "Spider Robot Gait ML",
+    label: "AI · Controls",
+    tags: ["AI", "Controls"],
+    desc: "Polynomial regression models on Raspberry Pi to correct drift in a hexapod's forward walk via dynamic servo adjustments.",
+    stack: "Python · Raspberry Pi",
+    year: "2025", role: "Solo",
+    repo: "",
+    status: "Complete",
+    body: "Developed multiple polynomial regression models to correct forward-walk drift through dynamic servo adjustments. Optimized weight parameters and polynomial degree by minimizing MSE across 1D and 2D input spaces to reduce overfitting."
+  },
+  {
+    title: "Mechatronics Follower Robot",
+    label: "Embedded · Controls",
+    tags: ["Embedded", "Controls"],
+    desc: "Autonomous differential-drive robot using IR beacon tracking and ultrasound obstacle detection on Arduino.",
+    stack: "C++ · Arduino",
+    year: "2024", role: "Solo",
+    repo: "",
+    status: "Complete",
+    body: "IR beacon transceiver tracks and follows a moving beacon source with dynamic motion control. Ultrasound sensor enables obstacle detection and automatic stops for safe navigation."
+  },
+  {
+    title: "Autonomous Line-Following Robot",
+    label: "Embedded · Perception",
+    tags: ["Embedded", "Perception"],
+    desc: "Differential-drive robot with PWM-based PID motor control and real-time image processing on Raspberry Pi.",
+    stack: "Python · C · Raspberry Pi Pico",
+    year: "2024", role: "Solo",
+    repo: "",
+    status: "Complete",
+    body: "Integrated mechanics, electronics, and software on Raspberry Pi Pico and Zero with PWM-based PID motor control and real-time image processing. 3D-printed chassis and wheels designed with CAD and rapid prototyping."
+  },
+  {
+    title: "CTA Bus Tracker Web App",
+    label: "Software · Cloud",
+    tags: ["Software"],
+    desc: "Real-time public transit tracker using AWS, SQL, and third-party APIs to surface nearest stops and travel times.",
+    stack: "Python · AWS Lambda · SQL · RDS",
+    year: "2024", role: "Solo",
+    repo: "",
+    status: "Complete",
+    body: "Automated data retrieval and processing to provide closest stops, routes, and travel times. Built a scalable SQL database in AWS RDS and integrated third-party APIs through AWS Lambda to handle high-frequency, location-based queries."
+  },
+  {
+    title: "Formula SAE — Braking & Uprights",
+    label: "Hardware · CAD",
+    tags: ["Hardware"],
+    desc: "Brake rotor and rear upright design for Northwestern's FSAE race car, validated with FEA and MATLAB simulations.",
+    stack: "SolidWorks · MATLAB · FEA",
+    year: "2022–Present", role: "Team Member",
+    repo: "",
+    status: "Ongoing",
+    body: "Optimized brake rotor and rear upright designs with CAD and validated safety factors through FEA, reducing unsprung mass by 10%. Refined a MATLAB program to simulate braking scenarios and document caliper/master cylinder specifications. Assembled remote brake fluid reservoirs to increase fluid capacity by 80%."
   },
 ];
 
@@ -900,9 +1123,10 @@ const grid = document.getElementById('projectGrid');
 const filterBar = document.getElementById('filterBar');
 
 function allTags() {
-  const t = ['Featured', 'All'];
-  const seen = new Set(t);
+  const t = ['Featured'];
+  const seen = new Set(['Featured', 'All']);
   projects.forEach(p => (p.tags||[]).forEach(x => { if (!seen.has(x)) { t.push(x); seen.add(x); } }));
+  t.push('All');
   return t;
 }
 function filtered(list) {
@@ -916,8 +1140,8 @@ function renderFilters() {
   allTags().forEach(t => {
     const chip = document.createElement('button');
     chip.className = 'chip' + (t === activeFilter ? ' active' : '');
-    const count = t === 'Featured' ? projects.filter(p => p.feat).length : 
-                  t === 'All' ? projects.length : 
+    const count = t === 'All' ? projects.length :
+                  t === 'Featured' ? projects.filter(p => p.feat).length :
                   projects.filter(p => p.tags.includes(t)).length;
     chip.innerHTML = `${t} <span class="ct">${count}</span>`;
     chip.onclick = () => { activeFilter = t; renderProjects(); };
@@ -928,24 +1152,43 @@ function renderFilters() {
 function renderProjects() {
   renderFilters();
   grid.innerHTML = '';
-  filtered(projects).forEach((p, i) => {
+  const visibleProjects = filtered(projects);
+  const oddCount = visibleProjects.length % 2 === 1;
+  visibleProjects.forEach((p, i) => {
+    const isHero = oddCount && i === 0;
     const card = document.createElement('div');
-    card.className = 'pcard glow-card' + (p.feat ? ' feat' : '');
-    card.innerHTML = `
-      <div class="glow-overlay"></div>
-      <div style="position:relative; z-index:1; display:flex; flex-direction:column; height:100%;">
-        <span class="cat">${p.label}</span>
-        <h3>${p.title}</h3>
-        <p>${p.desc}</p>
-        <div class="footer">
-          <div class="meta">
-            <span class="meta-item">${p.stack}</span>
-            <span class="meta-item">${p.role}</span>
+    card.className = 'pcard glow-card' + (isHero ? ' feat' : '');
+    if (isHero) {
+      card.innerHTML = `
+        <div class="glow-overlay"></div>
+        <div class="feat-inner">
+          <div class="feat-left">
+            <span class="cat">${p.label}</span>
+            <h3>${p.title}</h3>
+            <p>${p.desc}</p>
           </div>
-          <div class="arrow">→</div>
+          <div class="feat-right">
+            <span class="meta-item">${p.stack}</span>
+            <div class="arrow">→</div>
+          </div>
         </div>
-      </div>
-    `;
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="glow-overlay"></div>
+        <div style="position:relative; z-index:1; display:flex; flex-direction:column; height:100%;">
+          <span class="cat">${p.label}</span>
+          <h3>${p.title}</h3>
+          <p>${p.desc}</p>
+          <div class="footer">
+            <div class="meta">
+              <span class="meta-item">${p.stack}</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+      `;
+    }
     card.onclick = () => openModal(p, i);
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
@@ -984,9 +1227,9 @@ function openModal(p, i) {
         <div class="c"><div class="k">Stack</div><div class="v">${p.stack}</div></div>
         <div class="c"><div class="k">Status</div><div class="v">${p.status}</div></div>
       </div>
-      <div class="m-img">[ HERO DEMO / VIDEO ]</div>
+      ${p.video ? `<video autoplay muted loop playsinline style="width:100%;border-radius:12px;margin:32px 0;border:1px solid var(--line);display:block;"><source src="${p.video}" type="video/quicktime"><source src="${p.video}"></video>` : ''}
       <p style="font-size: 18px; color: var(--ink-2); max-width: 60ch;">${p.body}</p>
-      <p style="margin-top: 40px; font-size: 13px; font-weight: 600; color: var(--accent);">→ github.com/${p.repo}</p>
+      ${p.repo ? `<p style="margin-top: 40px; font-size: 13px; font-weight: 600; color: var(--accent);">→ github.com/${p.repo}</p>` : ''}
     </div>
   `;
   modal.classList.add('open');
