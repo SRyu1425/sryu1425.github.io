@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -20,6 +20,7 @@
     --accent: #2A5D8A;
     --accent-2: #4A8CC2;
     --nav-bg: rgba(253, 252, 251, 0.75);
+    --modal-bg: rgba(253, 252, 251, 0.8);
   }
   
   [data-theme="dark"] {
@@ -34,6 +35,7 @@
     --accent: #58A6FF;
     --accent-2: #79C0FF;
     --nav-bg: rgba(15, 17, 21, 0.75);
+    --modal-bg: rgba(10, 12, 16, 0.85);
   }
   
   *,*::before,*::after { box-sizing: border-box; }
@@ -394,13 +396,14 @@
 
   /* EXPERIENCE */
   .exp-list { display: flex; flex-direction: column; gap: 24px; }
-  .exp-left .company { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-  .exp-left .role { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 16px; }
+  .exp-left .company { font-size: 20px; font-weight: 800; color: var(--ink); margin-bottom: 2px; }
+  .exp-left .role { font-size: 15px; font-weight: 600; color: var(--ink-2); margin-bottom: 4px; }
+  .exp-type { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
   .exp-left .meta { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
   .exp-logo {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     margin-bottom: 24px;
     object-fit: contain;
     filter: grayscale(1) opacity(0.6);
@@ -428,20 +431,7 @@
   }
   .exp-right .outcome { margin-top: 24px; font-size: 13px; font-weight: 600; color: var(--accent); }
 
-  /* PROJECTS & FILTERS */
-  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
-  .filters .chip {
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    background: transparent; border: 1px solid var(--line);
-    color: var(--muted); padding: 8px 16px; border-radius: 999px;
-    cursor: pointer; transition: all 200ms;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .filters .chip:hover { border-color: var(--muted); color: var(--ink); }
-  .filters .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .filters .chip .ct { opacity: 0.5; font-size: 9px; }
-
+  /* PROJECTS */
   .project-grid {
     display: grid; grid-template-columns: repeat(2, 1fr);
     gap: 24px;
@@ -585,7 +575,7 @@
   .modal {
     position: fixed; inset: 0; z-index: 200;
     pointer-events: none; opacity: 0;
-    background: rgba(253, 252, 251, 0.8);
+    background: var(--modal-bg);
     backdrop-filter: blur(20px);
     transition: opacity 400ms;
     display: flex; justify-content: center; align-items: center;
@@ -596,6 +586,7 @@
     width: min(900px, 94vw);
     max-height: 90vh;
     border-radius: 32px;
+    border: 1px solid var(--line);
     box-shadow: 0 40px 120px rgba(0,0,0,0.15);
     overflow-y: auto;
     position: relative;
@@ -606,21 +597,115 @@
   .modal-close {
     position: sticky; top: 24px; left: 100%; margin-right: 24px;
     width: 36px; height: 36px; border-radius: 50%;
-    background: var(--bg-2); border: none; cursor: pointer;
+    background: var(--bg-2); border: 1px solid var(--line); cursor: pointer;
     display: grid; place-items: center; z-index: 10;
+    color: var(--ink);
+    transition: all 200ms;
   }
+  .modal-close:hover { background: var(--bg-3); transform: scale(1.1); }
   .modal-hero { padding: 60px 80px 40px; }
   .modal-body { padding: 0 80px 80px; }
   @media (max-width: 900px) { .modal-hero, .modal-body { padding: 40px 32px; } }
   
   .m-meta {
-    display: grid; grid-template-columns: 1fr 1fr 72px;
+    display: grid; grid-template-columns: 1.2fr 1.2fr 80px;
     gap: 1px; background: var(--line); border: 1px solid var(--line);
-    border-radius: 16px; overflow: hidden; margin: 32px 0;
+    border-radius: 20px; overflow: hidden; margin: 32px 0;
   }
-  .m-meta .c { background: var(--bg); padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-  .m-meta .k { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
-  .m-meta .v { font-size: 14px; font-weight: 500; }
+  .m-meta .c { background: var(--bg-2); padding: 24px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .m-meta .k { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .m-meta .v { font-size: 15px; font-weight: 500; color: var(--ink); line-height: 1.4; }
+  .m-gallery {
+    display: grid;
+    gap: 12px;
+    margin: 32px 0;
+  }
+  .m-gallery.single { grid-template-columns: 1fr; }
+  .m-gallery.collage {
+    grid-template-columns: minmax(0, 1.45fr) minmax(220px, 0.9fr);
+    grid-auto-rows: 180px;
+  }
+  .m-gallery.count-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 300px;
+  }
+  .m-gallery.collage.count-4 {
+    grid-auto-rows: 160px;
+  }
+  .m-media {
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--bg-2);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .m-gallery.collage:not(.count-2) .m-media:first-child {
+    grid-row: span 2;
+  }
+  .m-gallery.collage.count-4 .m-media:first-child {
+    grid-row: span 3;
+  }
+  .m-gallery.single .m-media { padding: 0; min-height: 0; }
+  .m-gallery.single .m-media-el { height: auto; object-fit: initial; }
+  .m-media-el {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    background: var(--bg-2);
+  }
+  .m-gallery.collage .m-media,
+  .m-gallery.count-2 .m-media {
+    padding: 0;
+    position: relative;
+  }
+  .m-gallery.collage .m-media-el,
+  .m-gallery.count-2 .m-media-el {
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+  }
+  @media (max-width: 720px) {
+    .m-gallery.collage {
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+    }
+    .m-gallery.collage .m-media,
+    .m-gallery.collage .m-media:first-child {
+      grid-row: auto;
+      aspect-ratio: 4 / 3;
+    }
+    .m-gallery.collage .m-media:first-child { aspect-ratio: 16 / 9; }
+  }
+  .m-gallery.layout-top-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    grid-template-rows: 420px 220px 350px;
+    gap: 12px;
+    margin: 32px 0;
+  }
+  .m-gallery.layout-top-bar .m-media { position: relative; }
+  .m-gallery.layout-top-bar .m-media-el { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .m-gallery.layout-top-bar .m-media:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+  .m-gallery.layout-top-bar .m-media:nth-child(2) { grid-column: 1; grid-row: 2 / 4; }
+  .m-gallery.layout-top-bar .m-media:nth-child(3) { grid-column: 2; grid-row: 2; }
+  .m-gallery.layout-top-bar .m-media:nth-child(4) { grid-column: 2; grid-row: 3; }
+  @media (max-width: 720px) {
+    .m-gallery.layout-top-bar {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    .m-gallery.layout-top-bar .m-media {
+      grid-column: auto !important;
+      grid-row: auto !important;
+      aspect-ratio: 4 / 3;
+    }
+    .m-gallery.layout-top-bar .m-media:nth-child(1) { aspect-ratio: 16 / 9; }
+  }
   .m-img {
     aspect-ratio: 16 / 9; border: 1px solid var(--line);
     background: var(--bg-2); border-radius: 12px; margin: 32px 0;
@@ -651,7 +736,7 @@
   <span class="eyebrow">Robotics Portfolio</span>
   <h1>Siwon Ryu</h1>
   <p class="hero-sub">BS/MS · MechE & CS</p>
-  <a class="hero-resume" href="resume.pdf" download>Download Resume</a>
+  <a class="hero-resume" href="media/Resume_Siwon_Ryu.pdf" download>Download Resume</a>
   <a href="#showcase" class="scroll-hint">
     <svg width="22" height="22" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M2 5l5 5 5-5"/>
@@ -716,17 +801,18 @@
           <div class="exp-left">
             <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo" class="exp-logo apple-logo">
             <div class="company">Apple</div>
-            <div class="role">Hardware Reliability Engineering Intern</div>
-            <div class="meta">Feb – Aug 2026<br>Cupertino, CA</div>
+            <div class="role">Hardware Reliability Engineer</div>
+            <div class="exp-type">Internship</div>
+            <div class="meta">Feb 2026- Present<br>Cupertino, CA</div>
           </div>
           <div class="exp-right">
             <ul>
-              <li>Automated a <b>3-day manual data pipeline down to minutes</b> by integrating cross-functional data source APIs and designing a UI/UX optimized for quick adoption.</li>
-              <li>Developed a <b>sentiment analysis tool</b> using open-source libraries and agentic workflow, replacing hours of manual research with a repeatable automated process.</li>
               <li>Building a <b>computer vision pipeline</b> on high-speed video footage to automatically classify hardware impact types using segmentation models (SAM 3).</li>
+              <li>Automated a <b>3-day manual process down to minutes</b> by creating a data analysis app integrating data source APIs and reliability models</li>
+              <li>Developed a <b>sentiment analysis tool</b> using open-source libraries and agentic workflow, replacing hours of manual research with an automated process.</li>
             </ul>
             <div class="stack">
-              <span class="tag">Python</span><span class="tag">Computer Vision</span><span class="tag">SAM 3</span><span class="tag">NLP</span>
+              <span class="tag">Computer Vision</span><span class="tag">SAM 3</span><span class="tag">Agentic Workflow</span>
             </div>
           </div>
         </div>
@@ -738,18 +824,18 @@
           <div class="exp-left">
             <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Milwaukee_Logo.svg" alt="Milwaukee Tool Logo" class="exp-logo">
             <div class="company">Milwaukee Tool</div>
-            <div class="role">Automation Engineering Intern</div>
-            <div class="meta">Jun – Aug 2025<br>Menomonee Falls, WI</div>
+            <div class="role">Automation Engineer</div>
+            <div class="exp-type">Internship</div>
+            <div class="meta">Jun - Aug 2025<br>Menomonee Falls, WI</div>
           </div>
           <div class="exp-right">
             <ul>
               <li>Automated data workflows using Python, Pandas, and SQL, <b>saving 60+ hours/week</b> in manual processing while improving data accuracy for global engineering teams.</li>
-              <li>Redesigned HMI logic and rewired electronic controls to <b>extend dust chamber test cycles by 25%</b>, reducing manual configuration time.</li>
+              <li>Rewired electronic controls and troubleshot PLC/HMI program to <b>extend dust chamber test cycles by 25%</b>, reducing manual configuration time and adding new test actuator functionality with an input/output device.</li>
               <li>Developed new SLS filtration systems for dust ingress testing chambers, <b>cutting maintenance time by ~90%</b>.</li>
-              <li>Engineered new electrical control system integrating a digital timer relay and proprietary controllers to increase testing versatility.</li>
             </ul>
             <div class="stack">
-              <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">SQL</span><span class="tag">PLC</span><span class="tag">HMI</span>
+              <span class="tag">PLC/HMI</span><span class="tag">CAD/Rapid Prototyping</span><span class="tag">Pandas</span><span class="tag">SQL</span>
             </div>
           </div>
         </div>
@@ -761,17 +847,18 @@
           <div class="exp-left">
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/Procter_%26_Gamble_logo.svg" alt="P&G Logo" class="exp-logo">
             <div class="company">Procter & Gamble</div>
-            <div class="role">Manufacturing Engineering Intern</div>
-            <div class="meta">Jun – Aug 2024<br>Mehoopany, PA</div>
+            <div class="role">Manufacturing Engineer</div>
+            <div class="exp-type">Internship</div>
+            <div class="meta">Jun - Aug 2024<br>Mehoopany, PA</div>
           </div>
           <div class="exp-right">
             <ul>
-              <li>Designed and fabricated a retrofitted core reworker, <b>boosting efficiency by 5×</b> while complying with site safety requirements.</li>
-              <li>Led cross-functional teams to optimize a new operational area, resulting in <b>projected annual savings of $450,000</b>.</li>
               <li>Developed an automated Excel/VBA program optimizing 600,000+ sq ft of warehouse storage, <b>cutting $30K/month</b> in trailer detention costs.</li>
+              <li>Designed and fabricated a retrofitted core reworker, <b>boosting efficiency by 5x</b> while complying with site safety requirements.</li>
+              <li>Led cross-functional teams to optimize a new operational area, resulting in <b>projected annual savings of $450,000</b>.</li>
             </ul>
             <div class="stack">
-              <span class="tag">Excel</span><span class="tag">VBA</span><span class="tag">CAD</span>
+              <span class="tag">Excel VBA</span><span class="tag">Cross-Functional</span><span class="tag">Optimization</span>
             </div>
           </div>
         </div>
@@ -787,7 +874,6 @@
       <span class="eyebrow">Portfolio</span>
       <h2>Personal Projects</h2>
     </div>
-    <div class="filters" id="filterBar"></div>
     <div class="project-grid" id="projectGrid"></div>
   </div>
 </section>
@@ -804,8 +890,8 @@
         <img src="media/headshot.png" alt="Siwon Ryu">
       </div>
       <div class="about-body">
-        <p>I'm Siwon, a Northwestern student ('27) pursuing a BS in <span class="b">Mechanical Engineering</span> and an MS in <span class="b">Computer Science</span>.</p>
-        <p>My background has given me a strong foundation in both <span class="b">hardware and software</span>. With robotics, I can use my experience in both fields and work at the intersection between them, which to me is the most fun.</p>
+        <p>Hi, I'm Siwon, a Northwestern student ('27) pursuing a BS in <span class="b">Mechanical Engineering</span> and an MS in <span class="b">Computer Science</span>.</p>
+        <p>My background has given me a strong foundation in both <span class="b">hardware and software</span>. With robotics, I not only use my experience in both fields, but more excitingly, I'm able to work to at the intersection between them. </p>
         <p>In my free time, you can usually find me playing the drums or piano, playing basketball, or watching MMA.</p>
         <div class="about-links">
           <a class="about-icon" href="mailto:siwonryu1425@gmail.com" aria-label="Email Siwon Ryu" title="Email">
@@ -829,7 +915,7 @@
             </svg>
             <span class="sr-only">GitHub</span>
           </a>
-          <a class="about-icon" href="resume.pdf" download aria-label="Download Resume" title="Resume">
+          <a class="about-icon" href="media/Resume_Siwon_Ryu.pdf" download aria-label="Download Resume" title="Resume">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
@@ -870,7 +956,8 @@ const currentTheme = localStorage.getItem('theme');
 
 if (currentTheme) {
   document.documentElement.setAttribute('data-theme', currentTheme);
-} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+} else {
+  // Default to dark mode
   document.documentElement.setAttribute('data-theme', 'dark');
 }
 
@@ -911,7 +998,7 @@ const progressBars = document.querySelectorAll('#stageProgress span');
 const stageCopy = [
   { project: "ROS 2 Vision Tracker", title: "Autonomous Vision Tracking", desc: "Real-time HSV color detection driving a Sphero Mini via ROS 2 and BLE." },
   { project: "Particle Filter Localization", title: "Monte Carlo Localization", desc: "Particle cloud converges to ground-truth pose through sequential importance resampling." },
-  { project: "Mobile Manipulator (CoppeliaSim)", title: "Pick & Place Control", desc: "KUKA youBot executing dynamic trajectories with PI feedback in CoppeliaSim." }
+  { project: "Mobile Manipulator Simulation", title: "Pick & Place Control", desc: "KUKA youBot executing dynamic trajectories with PI feedback in CoppeliaSim." }
 ];
 const stageLabel = document.getElementById('stageLabel');
 
@@ -940,14 +1027,15 @@ window.addEventListener('scroll', updateStage, { passive: true });
 const projects = [
   {
     feat: true,
-    title: "ROS 2 Vision Tracker",
+    title: "ROS 2 Sphero Tracker",
     label: "Autonomy · Perception",
     tags: ["Autonomy", "Perception"],
     desc: "Autonomous color-tracking system for a Sphero Mini using ROS 2, OpenCV HSV detection, and BLE control.",
-    stack: "ROS 2 · Python · OpenCV · BLE",
+    stack: "ROS 2 · Python · OpenCV · Tkinter",
     year: "2025", role: "Solo",
     repo: "SRyu1425/ROS2-Computer-Vision-Tracker",
     concepts: "Pub/Sub Architecture · HSV Color Segmentation · Closed-Loop Control",
+    video: ["media/Teleop.mp4", "media/SpheroDemo.mov"],
     body: "Real-time HSV masking pipeline detects the Sphero's position from a webcam feed, publishes velocity commands over ROS 2 topics, and drives the robot via BLE. Includes a Tkinter GUI for manual teleoperation and mode switching."
   },
   {
@@ -959,13 +1047,13 @@ const projects = [
     stack: "Python · NumPy · Matplotlib",
     year: "2025", role: "Solo",
     repo: "SRyu1425/Particle-Filter-Localization",
-    concepts: "Monte Carlo Methods · Importance Resampling · Bayesian Estimation",
+    concepts: "Non-parametric Filter · Importance Resampling · Localization",
     video: "media/particleDemo.mov",
     body: "Built the full particle filter from scratch — motion model, measurement model with Gaussian landmark noise, and sequential importance resampling. Visualized particle cloud convergence over time with Matplotlib animations."
   },
   {
     feat: true,
-    title: "Mobile Manipulator (CoppeliaSim)",
+    title: "Mobile Manipulator Simulation",
     label: "Manipulation · Sim",
     tags: ["Manipulation", "Sim"],
     desc: "youBot pick-and-place with quintic trajectory generation and PI feedback control in CoppeliaSim.",
@@ -985,6 +1073,7 @@ const projects = [
     year: "2024", role: "Solo",
     repo: "SRyu1425/Motor-Control-Project",
     concepts: "Cascaded PID · Current Sensing · Encoder Feedback",
+    video: "media/motorControl.MOV",
     body: "Implemented nested PID loops on a PIC32 microcontroller. The inner loop regulates current via INA219 sensing; the outer loop tracks position from a Pico-based encoder reader over UART. Tuned gains empirically on the bench."
   },
   {
@@ -996,6 +1085,7 @@ const projects = [
     year: "2024", role: "Solo",
     repo: "SRyu1425/Finger-Pen",
     concepts: "Convexity Defects · Skin Segmentation · Kalman Filtering",
+    video: "media/fingerpen.mov",
     body: "Skin color histogram + morphological ops isolate the hand. Convexity defect analysis identifies the fingertip. A Kalman filter smooths the drawing trajectory so strokes don't jitter."
   },
   {
@@ -1007,6 +1097,7 @@ const projects = [
     year: "2024", role: "Solo",
     repo: "SRyu1425/Jack-s-Game-Simulation",
     concepts: "Euler-Lagrange · Rigid Body Dynamics · Impact Detection · SE(3)",
+    video: "media/Ryu_JacksGame.mov",
     body: "Derives equations of motion symbolically with SymPy, integrates numerically, and detects impacts between the jack's tips and the box walls using SE(3) transformations."
   },
   {
@@ -1021,17 +1112,6 @@ const projects = [
     body: "Implemented A* and LRTA* using Chebyshev distance as a consistent heuristic on 1.0m and 0.1m resolution grids, verified against ground truth paths. Tuned a P/PD controller with acceleration limits to follow planned paths, correcting heading error before translational movement."
   },
   {
-    title: "Hexapod Navigation & Mapping",
-    label: "Autonomy · Embedded",
-    tags: ["Autonomy", "Embedded"],
-    desc: "Hexapod robot with grid-based mapping, A* path planning, and ultrasonic obstacle detection on Raspberry Pi.",
-    stack: "Python · Raspberry Pi · A*",
-    year: "2025", role: "Solo",
-    repo: "",
-    concepts: "Occupancy Grids · Gait Synthesis · Autonomous Exploration",
-    body: "Engineered a full navigation stack using grid-based mapping, localization, and A* path planning, allowing the robot to navigate through any maze. Calibrated ultrasonic sensor thresholds and fine-tuned 18-servo walking gaits for reliable autonomous exploration."
-  },
-  {
     title: "Spider Robot Gait ML",
     label: "AI · Controls",
     tags: ["AI", "Controls"],
@@ -1040,6 +1120,7 @@ const projects = [
     year: "2025", role: "Solo",
     repo: "",
     concepts: "Polynomial Regression · Bias-Variance Tradeoff · Servo Calibration",
+    media: ["media/spider1.MOV", "media/spider2.MOV"],
     body: "Developed multiple polynomial regression models to correct forward-walk drift through dynamic servo adjustments. Optimized weight parameters and polynomial degree by minimizing MSE across 1D and 2D input spaces to reduce overfitting."
   },
   {
@@ -1051,20 +1132,10 @@ const projects = [
     year: "2024", role: "Solo",
     repo: "",
     concepts: "IR Sensing · Differential Drive · Reactive Control",
+    media: ["media/follower1.MOV?v=20260511", "media/follower1.png", "media/follower2.png"],
     body: "IR beacon transceiver tracks and follows a moving beacon source with dynamic motion control. Ultrasound sensor enables obstacle detection and automatic stops for safe navigation."
   },
-  {
-    title: "Autonomous Line-Following Robot",
-    label: "Embedded · Perception",
-    tags: ["Embedded", "Perception"],
-    desc: "Differential-drive robot with PWM-based PID motor control and real-time image processing on Raspberry Pi.",
-    stack: "Python · C · Raspberry Pi Pico",
-    year: "2024", role: "Solo",
-    repo: "",
-    concepts: "PID Motor Control · Image Processing · PWM",
-    body: "Integrated mechanics, electronics, and software on Raspberry Pi Pico and Zero with PWM-based PID motor control and real-time image processing. 3D-printed chassis and wheels designed with CAD and rapid prototyping."
-  },
-  {
+    {
     title: "CTA Bus Tracker Web App",
     label: "Software · Cloud",
     tags: ["Software"],
@@ -1072,59 +1143,31 @@ const projects = [
     stack: "Python · AWS Lambda · SQL · RDS",
     year: "2024", role: "Solo",
     repo: "",
-    concepts: "REST APIs · Cloud Architecture · Geospatial Queries",
+    concepts: "REST APIs · Cloud Architecture · Databases",
+    media: ["media/CTAwebapp.svg?v=20260512b"],
     body: "Automated data retrieval and processing to provide closest stops, routes, and travel times. Built a scalable SQL database in AWS RDS and integrated third-party APIs through AWS Lambda to handle high-frequency, location-based queries."
   },
   {
-    title: "Formula SAE — Braking & Uprights",
+    title: "Formula SAE",
     label: "Hardware · CAD",
     tags: ["Hardware"],
     desc: "Brake rotor and rear upright design for Northwestern's FSAE race car, validated with FEA and MATLAB simulations.",
     stack: "SolidWorks · MATLAB · FEA",
-    year: "2022–Present", role: "Team Member",
+    year: "2022-2025", role: "Team Member",
     repo: "",
-    concepts: "FEA · Unsprung Mass Optimization · Brake Bias",
+    concepts: "Braking System · Rear Uprights · Manufacturing",
+    media: ["media/uprights2.png?v=20260512", "media/uprights1.jpg", "media/rotor.JPG", "media/uprights3.png"],
+    layout: "layout-top-bar",
     body: "Optimized brake rotor and rear upright designs with CAD and validated safety factors through FEA, reducing unsprung mass by 10%. Refined a MATLAB program to simulate braking scenarios and document caliper/master cylinder specifications. Assembled remote brake fluid reservoirs to increase fluid capacity by 80%."
   },
 ];
 
-let activeFilter = 'Featured';
 const grid = document.getElementById('projectGrid');
-const filterBar = document.getElementById('filterBar');
-
-function allTags() {
-  const t = ['Featured'];
-  const seen = new Set(['Featured', 'All']);
-  projects.forEach(p => (p.tags||[]).forEach(x => { if (!seen.has(x)) { t.push(x); seen.add(x); } }));
-  t.push('All');
-  return t;
-}
-function filtered(list) {
-  if (activeFilter === 'All') return list;
-  if (activeFilter === 'Featured') return list.filter(p => p.feat);
-  return list.filter(p => (p.tags||[]).includes(activeFilter));
-}
-
-function renderFilters() {
-  filterBar.innerHTML = '';
-  allTags().forEach(t => {
-    const chip = document.createElement('button');
-    chip.className = 'chip' + (t === activeFilter ? ' active' : '');
-    const count = t === 'All' ? projects.length :
-                  t === 'Featured' ? projects.filter(p => p.feat).length :
-                  projects.filter(p => p.tags.includes(t)).length;
-    chip.innerHTML = `${t} <span class="ct">${count}</span>`;
-    chip.onclick = () => { activeFilter = t; renderProjects(); };
-    filterBar.appendChild(chip);
-  });
-}
 
 function renderProjects() {
-  renderFilters();
   grid.innerHTML = '';
-  const visibleProjects = filtered(projects);
-  const oddCount = visibleProjects.length % 2 === 1;
-  visibleProjects.forEach((p, i) => {
+  const oddCount = projects.length % 2 === 1;
+  projects.forEach((p, i) => {
     const isHero = oddCount && i === 0;
     const card = document.createElement('div');
     card.className = 'pcard glow-card' + (isHero ? ' feat' : '');
@@ -1186,6 +1229,13 @@ const modal = document.getElementById('modal');
 const mBody = document.getElementById('mBody');
 
 function openModal(p, i) {
+  const media = Array.isArray(p.media) ? p.media : (p.media ? [p.media] : []);
+  // Legacy support for 'video' property if 'media' isn't used
+  if (media.length === 0 && p.video) {
+    if (Array.isArray(p.video)) media.push(...p.video);
+    else media.push(p.video);
+  }
+
   mBody.innerHTML = `
     <div class="modal-hero">
       <span class="eyebrow">${p.label}</span>
@@ -1197,8 +1247,29 @@ function openModal(p, i) {
         <div class="c"><div class="k">Stack</div><div class="v">${p.stack}</div></div>
         <div class="c"><div class="k">Year</div><div class="v">${p.year}</div></div>
       </div>
-      ${p.video ? `<video autoplay muted loop playsinline style="width:100%;border-radius:12px;margin:32px 0;border:1px solid var(--line);display:block;"><source src="${p.video}" type="video/quicktime"><source src="${p.video}"></video>` : ''}
-      <p style="font-size: 18px; color: var(--ink-2); max-width: 60ch;">${p.body}</p>
+      <div class="${p.layout ? 'm-gallery ' + p.layout : 'm-gallery ' + (media.length > 1 ? 'collage' : 'single') + ' count-' + Math.min(media.length, 4)}">
+        ${media.map((m) => {
+          const mediaPath = m.split('?')[0];
+          const isVideo = mediaPath.match(/\.(mp4|mov|webm)$/i);
+          if (isVideo) {
+            const ext = mediaPath.split('.').pop().toLowerCase();
+            const type = ext === 'mp4' ? 'video/mp4' : ext === 'webm' ? 'video/webm' : 'video/quicktime';
+            return `
+              <div class="m-media">
+                <video class="m-media-el" autoplay muted loop playsinline>
+                  <source src="${m}" type="${type}">
+                  <source src="${m}">
+                </video>
+              </div>`;
+          } else {
+            return `
+              <div class="m-media">
+                <img class="m-media-el" src="${m}" alt="Project image">
+              </div>`;
+          }
+        }).join('')}
+      </div>
+      <p style="font-size: 18px; color: var(--ink-2); max-width: 60ch; margin-top: 32px;">${p.body}</p>
       ${p.repo ? `<a href="https://github.com/${p.repo}" target="_blank" rel="noreferrer" style="display:inline-block;margin-top:40px;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;">→ github.com/${p.repo}</a>` : ''}
     </div>
   `;
