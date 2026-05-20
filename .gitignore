@@ -226,4 +226,5 @@ __marimo__/
 *.txt
 serve.py
 **/.*/
-docsCLAUDE.md
+docs
+CLAUDE.md

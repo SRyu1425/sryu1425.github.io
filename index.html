@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Siwon Ryu — Robotics Engineer</title>
+<title>Siwon Ryu - Robotics Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -70,7 +70,7 @@
     display: block;
   }
 
-  /* Spotlight — hero-only, dark mode only */
+  /* Spotlight - hero-only, dark mode only */
   .spotlight { display: none; }
   [data-theme="dark"] .spotlight { display: block; }
 
@@ -706,6 +706,110 @@
     }
     .m-gallery.layout-top-bar .m-media:nth-child(1) { aspect-ratio: 16 / 9; }
   }
+  .m-gallery.layout-img-top {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    gap: 12px;
+    margin: 32px 0;
+  }
+  .m-gallery.layout-img-top .m-media:nth-child(1) {
+    grid-column: 1 / 3;
+    padding: 0;
+  }
+  .m-gallery.layout-img-top .m-media:nth-child(1) .m-media-el {
+    width: 100%;
+    height: auto;
+    object-fit: initial;
+  }
+  .m-gallery.layout-img-top .m-media:nth-child(n+2) {
+    padding: 0;
+  }
+  .m-gallery.layout-img-top .m-media:nth-child(n+2) .m-media-el {
+    width: 100%;
+    height: auto;
+    object-fit: initial;
+    display: block;
+  }
+  @media (max-width: 720px) {
+    .m-gallery.layout-img-top {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    .m-gallery.layout-img-top .m-media:nth-child(1) {
+      grid-column: auto;
+    }
+    .m-gallery.layout-img-top .m-media:nth-child(n+2) {
+      aspect-ratio: 4 / 3;
+    }
+  }
+  .m-gallery.layout-video-top {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto 280px;
+    gap: 12px;
+    margin: 32px 0;
+  }
+  .m-gallery.layout-video-top .m-media:nth-child(1) {
+    grid-column: 1 / 3;
+    justify-self: center;
+    width: 60%;
+    padding: 0;
+  }
+  .m-gallery.layout-video-top .m-media:nth-child(1) .m-media-el {
+    width: 100%;
+    height: auto;
+    object-fit: initial;
+  }
+  .m-gallery.layout-video-top .m-media:nth-child(n+2) {
+    position: relative;
+    padding: 0;
+  }
+  .m-gallery.layout-video-top .m-media:nth-child(n+2) .m-media-el {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (max-width: 720px) {
+    .m-gallery.layout-video-top {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    .m-gallery.layout-video-top .m-media:nth-child(1) {
+      grid-column: auto;
+      aspect-ratio: 16 / 9;
+    }
+    .m-gallery.layout-video-top .m-media:nth-child(n+2) {
+      aspect-ratio: 4 / 3;
+    }
+  }
+  .m-gallery.layout-video-right-tall {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: 300px 230px 265px;
+    gap: 12px;
+    margin: 32px 0;
+  }
+  .m-gallery.layout-video-right-tall .m-media { position: relative; padding: 0; }
+  .m-gallery.layout-video-right-tall .m-media-el { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .m-gallery.layout-video-right-tall .m-media:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+  .m-gallery.layout-video-right-tall .m-media:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .m-gallery.layout-video-right-tall .m-media:nth-child(3) { grid-column: 1; grid-row: 3; }
+  .m-gallery.layout-video-right-tall .m-media:nth-child(4) { grid-column: 2; grid-row: 2 / 4; }
+  @media (max-width: 720px) {
+    .m-gallery.layout-video-right-tall {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    .m-gallery.layout-video-right-tall .m-media {
+      grid-column: auto !important;
+      grid-row: auto !important;
+      aspect-ratio: 4 / 3;
+    }
+    .m-gallery.layout-video-right-tall .m-media:nth-child(1) { aspect-ratio: 16 / 9; }
+  }
   .m-img {
     aspect-ratio: 16 / 9; border: 1px solid var(--line);
     background: var(--bg-2); border-radius: 12px; margin: 32px 0;
@@ -1036,7 +1140,7 @@ const projects = [
     repo: "SRyu1425/ROS2-Computer-Vision-Tracker",
     concepts: "Pub/Sub Architecture · HSV Color Segmentation · Closed-Loop Control",
     video: ["media/Teleop.mp4", "media/SpheroDemo.mov"],
-    body: "Real-time HSV masking pipeline detects the Sphero's position from a webcam feed, publishes velocity commands over ROS 2 topics, and drives the robot via BLE. Includes a Tkinter GUI for manual teleoperation and mode switching."
+    body: "A multi-node ROS 2 system that detects, tracks, and drives a Sphero Mini using only a webcam and BLE. The vision pipeline pulls frames from a USB camera, masks them by color to find both a \"robot\" blob and a \"target\" blob, and computes their relative bearing and distance. A control bridge node consumes either those autonomy estimates or manual joystick inputs from a Tkinter GUI and applies a simple proportional controller to produce yaw and velocity commands.<br><br>Commands are pushed to a thin BLE driver that encodes Sphero API packets (roll, stabilization, reset-heading, LED color) and streams back IMU, battery, and firmware status. The Tkinter UI integrates with the ROS client library via a background thread so the joystick, D-pad, and mode toggles behave like ROS publishers without blocking the GUI's event loop.<br><br>Everything is wired together by a single launch file that brings up camera, vision, GUI, and control nodes under one namespace. The project ended up being a tour through most of the ROS 2 stack (topics, namespaces, launch files, async event handling) and emphasized robotics integration: bridging a vision module, a control loop, and a hardware driver into one autonomous system."
   },
   {
     feat: true,
@@ -1048,8 +1152,9 @@ const projects = [
     year: "2025", role: "Solo",
     repo: "SRyu1425/Particle-Filter-Localization",
     concepts: "Non-parametric Filter · Importance Resampling · Localization",
-    video: "media/particleDemo.mov",
-    body: "Built the full particle filter from scratch — motion model, measurement model with Gaussian landmark noise, and sequential importance resampling. Visualized particle cloud convergence over time with Matplotlib animations."
+    media: ["media/particleDemo.mov", "media/particle_before.png", "media/particle_after.png"],
+    layout: "layout-video-top",
+    body: "A from-scratch implementation of the particle filter on a real multi-robot dataset, estimating a robot's pose by combining noisy odometry with landmark range/bearing measurements. Each particle represents a pose hypothesis, and at every step the filter runs three operations: a prediction step that generates particles through a motion model with sampled noise, an update step that weights particles by how well their predicted measurements match what the sensor actually sees, and a resampling step that draws a new particle set, concentrating samples near the true pose.<br><br>A notable challenge was the asynchronous structure of the dataset (control commands and measurements arrive at different timestamps) which I handled by merging both into a single chronological event timeline. Tuning the filter came down to balancing motion noise against sensor noise: too little of either makes it overconfident and lock onto the wrong pose, while too much makes it jittery and slow to converge.<br><br>The comparison to pure dead-reckoning was sharp: without the filter, accumulated odometry drift causes the estimate to diverge from ground truth within seconds, while the particle filter stays locked on. The animated visualization shows the cloud collapsing toward the true path as landmark observations correct drift, then re-spreading when no landmarks are visible - exactly the behavior expected from a well-tuned non-parametric estimator."
   },
   {
     feat: true,
@@ -1058,23 +1163,24 @@ const projects = [
     tags: ["Manipulation", "Sim"],
     desc: "youBot pick-and-place with quintic trajectory generation and PI feedback control in CoppeliaSim.",
     stack: "Python · NumPy · CoppeliaSim",
-    year: "2025", role: "Solo",
+    year: "2024", role: "Solo",
     repo: "SRyu1425/Mobile_Manipulator_CoppeliaSim",
     concepts: "Forward Kinematics · Quintic Time Scaling · Feedforward + PI Control",
-    video: "media/newTask.mov",
-    body: "Full pipeline: reference trajectory generation with quintic time scaling, feedforward + PI feedback controller, joint limit enforcement to avoid singularities. Outputs CSV trajectories visualized in CoppeliaSim."
+    media: ["media/newTask.mov", "media/youbot_task1.mov"],
+    body: "Full motion-planning and control pipeline for a KUKA youBot performing block pick-and-place in CoppeliaSim. The trajectory generator produces a smooth reference path for the end-effector with quintic time scaling, including intermediate standoff, grasp, and release poses so the gripper approaches and leaves the block from above. A feedback controller then tracks that reference using feedforward plus PI control, computing the commanded end-effector twist from the current pose error.<br><br>To keep the simulation physically realistic, I added joint-limits: before updating the configuration, every joint angle is checked against bounds to avoid self-collisions and singularities. If a limit is violated, the corresponding column of the Jacobian is zeroed and the pseudoinverse is recalculated, suppressing motion in the violating joint without disturbing the rest. Trajectories and end-effector error are logged to CSV for visualization.<br><br>The biggest lesson came from tuning the controller: I initially expected overshoot to come from the proportional term alone, but it actually requires a substantial integral term to drive error to zero and create oscillation around the reference. With the right balance, the error converges cleanly and the youBot completes the pick-and-place without collisions or singularity-induced control spikes."
   },
   {
     title: "Dual-Loop Motor Control",
     label: "Controls · Embedded",
     tags: ["Controls", "Embedded"],
-    desc: "PID inner current loop and outer position loop on a PIC32 with Raspberry Pi Pico encoder reading and INA219 current sensing.",
+    desc: "Cascaded PID motor control on a PIC32 with a 5kHz inner current loop (INA219) and a 200Hz outer position loop (Pico encoder).",
     stack: "C · Python · PIC32 · UART",
     year: "2024", role: "Solo",
     repo: "SRyu1425/Motor-Control-Project",
     concepts: "Cascaded PID · Current Sensing · Encoder Feedback",
-    video: "media/motorControl.MOV",
-    body: "Implemented nested PID loops on a PIC32 microcontroller. The inner loop regulates current via INA219 sensing; the outer loop tracks position from a Pico-based encoder reader over UART. Tuned gains empirically on the bench."
+    media: ["media/motorControl.MOV", "media/motorcontrol_2.png", "media/motorcontrol_3.png", "media/motorcontrol_1.png"],
+    layout: "layout-video-right-tall",
+    body: "Cascaded PID motor control system made with a PIC32, a Raspberry Pi Pico, and a current sensor. The inner loop runs at a high frequency of 5kHz on the PIC32, regulating motor current, and therefore torque, by reading the current sensor and adjusting PWM into an H-bridge. The outer loop runs slower at 200Hz and tracks position: the Pico reads encoder ticks and streams them to the PIC32 over UART, where a PID controller computes a desired current and feeds it as a setpoint to the inner loop.<br><br>The two-loop architecture matters because it cleanly separates \"what torque do I want right now\" from \"what position am I trying to reach,\" letting each controller see only the dynamics it needs to. The H-bridge handles direction and magnitude based on the inner loop's PWM, and a battery supplies motor power independently from the logic side.<br><br>On the software side, a Python script communicates with the PIC32 over serial to load reference trajectories, log responses, and plot motor position against the commanded path; a terminal UI on the PIC switches between modes - hold position, follow trajectory, idle. PID gains were tuned empirically by running square and sinusoidal references and comparing measured vs. commanded plots until the response looked clean."
   },
   {
     title: "Finger Pen",
@@ -1082,11 +1188,11 @@ const projects = [
     tags: ["Perception"],
     desc: "Real-time air drawing via webcam using hand gesture recognition, convexity defects, and Kalman filtering.",
     stack: "Python · OpenCV · NumPy",
-    year: "2024", role: "Solo",
+    year: "2025", role: "Solo",
     repo: "SRyu1425/Finger-Pen",
     concepts: "Convexity Defects · Skin Segmentation · Kalman Filtering",
     video: "media/fingerpen.mov",
-    body: "Skin color histogram + morphological ops isolate the hand. Convexity defect analysis identifies the fingertip. A Kalman filter smooths the drawing trajectory so strokes don't jitter."
+    body: "Webcam-only \"air drawing\" app that turns hand gestures into pen strokes in real time, with no extra hardware. At startup the user paints over a few patches of skin with a selector, and the app trains personalized color histograms in two color spaces to build a skin model that holds up across lighting and skin tones. Every subsequent frame is segmented against that model, cleaned up with morphological operations, and the largest connected contour is taken as the hand.<br><br>Gestures come from convexity defect analysis: a convex hull is fit to the hand contour, and the number of significant defects (gaps between fingers) decides the action - one finger draws, two fingers hover, three erase, and an open hand clears the canvas. The fingertip is taken as the topmost point of the contour, and a Kalman filter smooths its trajectory so strokes don't jitter even when the contour wobbles between frames.<br><br>A nice touch is dynamic brush thickness - line width scales with how big the hand looks in the frame, so moving closer to the camera produces thicker strokes the way a real pen would press harder. The whole loop runs at full webcam framerate and saves the drawing as a video, making it both a real-time tool and a demo recording."
   },
   {
     title: "Jack's Game Simulation",
@@ -1094,11 +1200,11 @@ const projects = [
     tags: ["Sim"],
     desc: "Physics-based 2D rigid body simulator of a bouncing jack inside an oscillating box using Euler-Lagrange mechanics.",
     stack: "Python · NumPy · SymPy",
-    year: "2024", role: "Solo",
+    year: "2025", role: "Solo",
     repo: "SRyu1425/Jack-s-Game-Simulation",
     concepts: "Euler-Lagrange · Rigid Body Dynamics · Impact Detection · SE(3)",
     video: "media/Ryu_JacksGame.mov",
-    body: "Derives equations of motion symbolically with SymPy, integrates numerically, and detects impacts between the jack's tips and the box walls using SE(3) transformations."
+    body: "Physics simulation of a small jack bouncing inside an oscillating, spinning box - derived end-to-end from first-principles Euler-Lagrange mechanics. The system is described by a set of rigid-body reference frames (one at the center and one at each face of both objects), with every transform represented in SE(3) so that translations and rotations compose cleanly even though the motion is planar.<br><br>From these frames I computed body velocities, simplified each rigid body to a point-mass rotational inertia, and built the Lagrangian symbolically with SymPy. External forces include gravity on both bodies plus a driven sinusoidal sway and spin on the box. Solving the forced Euler-Lagrange equations gives expressions for the accelerations of every configuration variable, which the simulator integrates over time.<br><br>Impact detection works where each face of the jack can collide with each wall of the box, so the simulator continuously evaluates a vector of contact constraints - one per pairing. When any constraint becomes active, it solves for the post-impact velocities together with the impulse, and updates the state so impact energy redistributes between the two bodies. The result is a physically consistent animation: the jack bounces, the box reacts subtly in the opposite direction, and both bodies settle under gravity in between strikes."
   },
   {
     title: "A* Path Planner & Controller",
@@ -1109,19 +1215,21 @@ const projects = [
     year: "2025", role: "Solo",
     repo: "",
     concepts: "Graph Search · Heuristic Functions · PD Control",
-    body: "Implemented A* and LRTA* using Chebyshev distance as a consistent heuristic on 1.0m and 0.1m resolution grids, verified against ground truth paths. Tuned a P/PD controller with acceleration limits to follow planned paths, correcting heading error before translational movement."
+    media: ["media/astarpaths.png", "media/astardrive1.png", "media/astardrive2.png"],
+    layout: "layout-img-top",
+    body: "Path-planning and control pipeline on occupancy grid maps, implemented from scratch at two different grid resolutions. The planner is classical A* with Chebyshev distance as the admissible heuristic, expanding nodes by the standard total-cost ranking. To handle the case where the full grid isn't known a priori, I also implemented LRTA* (Learning Real-Time A*), which maintains and updates a cost-estimate table online so the agent can react and replan as it discovers obstacles, trading off optimality for responsiveness.<br><br>On the control side, I designed a P / PD tracker to follow the planned waypoint sequence. A proportional controller sets linear velocity from distance to the next waypoint; a PD controller sets angular velocity from heading error with derivative damping to suppress oscillation. Realistic actuator limits are enforced by clamping commanded accelerations, and the controller corrects heading error before commanding translation so the robot doesn't curve into obstacles.<br><br>Testing the planner and controller end-to-end on a noisy motion model made the planner-controller mismatch visible: the executed path drifts off the planned one, which exposes when collision checking needs to be redone during execution rather than only at planning time. That gap between an optimal plan and a noisy execution was the most interesting takeaway."
   },
   {
     title: "Spider Robot Gait ML",
     label: "AI · Controls",
     tags: ["AI", "Controls"],
-    desc: "Polynomial regression models on Raspberry Pi to correct drift in a hexapod's forward walk via dynamic servo adjustments.",
+    desc: "Polynomial regression models built from scratch on Raspberry Pi to correct drift in a hexapod's forward walk via dynamic servo adjustments.",
     stack: "Python · Raspberry Pi",
     year: "2025", role: "Solo",
     repo: "",
     concepts: "Polynomial Regression · Bias-Variance Tradeoff · Servo Calibration",
     media: ["media/spider1.MOV", "media/spider2.MOV"],
-    body: "Developed multiple polynomial regression models to correct forward-walk drift through dynamic servo adjustments. Optimized weight parameters and polynomial degree by minimizing MSE across 1D and 2D input spaces to reduce overfitting."
+    body: "Polynomial regression models running on a Raspberry Pi to correct forward-walk drift in a hexapod by dynamically adjusting servo angles. The setup collected dozens of trials per model, sweeping servo deltas across a usable range (bounded by joint self-collision limits) and recording the resulting lateral and heading deviations. The regression itself is a closed-form least-squares fit, run separately for three models: one mapping servo input to lateral deviation, one to heading deviation, and one combined model predicting both.<br><br>Choosing the polynomial degree per model came down to balancing bias and variance using train/test error. Higher degrees fit the training data better but generalize worse, and the sweet spot landed at low-to-moderate degrees. The combined model also exposed a fundamental physical limitation: with a single servo input you can't independently command any pair of lateral and heading deviations, because some combinations are physically infeasible - the data simply doesn't cover that region of the output space.<br><br>The biggest source of noise turned out to be hardware: friction variability, setup drift between trials, and servo inconsistencies caused noticeable variance even when commanded with identical inputs. The regression smooths over that noise reasonably well, but the project really showed the gap between \"the model fits the data\" and \"the actuator is repeatable enough for the model to matter on the robot.\""
   },
   {
     title: "Mechatronics Follower Robot",
@@ -1133,7 +1241,7 @@ const projects = [
     repo: "",
     concepts: "IR Sensing · Differential Drive · Reactive Control",
     media: ["media/follower1.MOV?v=20260511", "media/follower1.png", "media/follower2.png"],
-    body: "IR beacon transceiver tracks and follows a moving beacon source with dynamic motion control. Ultrasound sensor enables obstacle detection and automatic stops for safe navigation."
+    body: "Autonomous differential-drive robot that homes on an IR beacon while avoiding obstacles, all on a single Arduino. The drive base uses a motor shield for the two motors, with three ultrasonic sensors handling obstacle detection - each computes distance by timing its echo pulse, and the controller cuts motor power the instant any front sensor reads below a safety threshold.<br><br>Four IR receiver pins arranged in compass directions detect the beacon's signal. The control logic is intentionally reactive rather than PID: digital reads on the directional pins trigger asymmetric turns by setting one motor faster than the other, producing proportional-feeling steering despite being pure threshold logic. Serial debug streams sensor readings out for tuning."
   },
     {
     title: "CTA Bus Tracker Web App",
@@ -1145,7 +1253,7 @@ const projects = [
     repo: "",
     concepts: "REST APIs · Cloud Architecture · Databases",
     media: ["media/CTAwebapp.svg?v=20260512b"],
-    body: "Automated data retrieval and processing to provide closest stops, routes, and travel times. Built a scalable SQL database in AWS RDS and integrated third-party APIs through AWS Lambda to handle high-frequency, location-based queries."
+    body: "Serverless web app on AWS that wraps the Chicago Transit Authority's public API into a usable interface for \"what's the fastest way from where I am to where I'm going.\" The architecture is a set of AWS Lambda functions sitting behind API Gateway, with persistent data in RDS. One Lambda takes a user-entered address and queries the database for the nearest CTA stop. Another lists the full route for a given stop by calling out to the CTA pattern endpoint. A third predicts travel time by polling the CTA prediction endpoint until it finds a vehicle scheduled to pass both the origin and destination stops, then reports the arrival-time delta.<br><br>The database schema separates routes from stops, normalized so each Lambda only joins what it needs. The client talks to the API over HTTPS with JSON, and the whole stack autoscales - cold-start tuning on the Lambda side keeps initial latency reasonable.<br><br>It was interesting to integrate everything together: identity, API surface, function code, database schema, and a third-party API, and a mistake at any layer surfaces as a server error to the user. Getting the system to handle high-frequency, location-keyed queries cleanly was the goal."
   },
   {
     title: "Formula SAE",
@@ -1158,7 +1266,7 @@ const projects = [
     concepts: "Braking System · Rear Uprights · Manufacturing",
     media: ["media/uprights2.png?v=20260512", "media/uprights1.jpg", "media/rotor.JPG", "media/uprights3.png"],
     layout: "layout-top-bar",
-    body: "Optimized brake rotor and rear upright designs with CAD and validated safety factors through FEA, reducing unsprung mass by 10%. Refined a MATLAB program to simulate braking scenarios and document caliper/master cylinder specifications. Assembled remote brake fluid reservoirs to increase fluid capacity by 80%."
+    body: "Brake system and rear upright design for Northwestern Formula SAE, validated through both MATLAB simulation and FEA. The braking model solves the coupled relationships between pedal force, hydraulic pressure, tire friction, and weight transfer across a range of vehicle speeds. From that, master-cylinder bore selection comes from pedal ratio, brake bias, and piston geometry - tuned so the front wheels always lock before the rear, keeping the car from spinning under hard braking. Caliper and rotor choices balance clamping force, mass, and sensor compatibility (rotors are a ferrous steel so the Hall-effect wheel-speed sensors actually pick them up).<br><br>The rear uprights work was a CAD-and-FEA loop: stress analyzed against worst-case cornering and braking loads with a healthy factor of safety, then iterated for weight and clearance against the surrounding suspension geometry. Design-for-manufacturability constraints - interior fillets only, minimum radii sized for the CNC end mill - were baked into the model so parts came off the machine without rework.<br><br>Across both efforts, the goal was the same: lighter unsprung mass, more predictable braking behavior, and parts the team could actually manufacture at the shop."
   },
 ];
 
