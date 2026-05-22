@@ -651,6 +651,8 @@
   }
   .m-gallery.single .m-media { padding: 0; min-height: 0; }
   .m-gallery.single .m-media-el { height: auto; object-fit: initial; }
+  :root .m-media.dark-bg { background: #16191e; border-color: #484f58; }
+  :root .m-media.dark-bg .m-media-el { background: transparent; }
   .m-media-el {
     width: 100%;
     height: 100%;
@@ -1056,20 +1058,10 @@
 // THEME TOGGLE
 const themeToggle = document.getElementById('themeToggle');
 const globalSpotlight = document.querySelector('.global-spotlight');
-const currentTheme = localStorage.getItem('theme');
-
-if (currentTheme) {
-  document.documentElement.setAttribute('data-theme', currentTheme);
-} else {
-  // Default to dark mode
-  document.documentElement.setAttribute('data-theme', 'dark');
-}
-
 themeToggle.addEventListener('click', () => {
   let theme = document.documentElement.getAttribute('data-theme');
   let newTheme = theme === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
 });
 
 // GLOBAL SPOTLIGHT TRACKING
@@ -1359,6 +1351,7 @@ function openModal(p, i) {
         ${media.map((m) => {
           const mediaPath = m.split('?')[0];
           const isVideo = mediaPath.match(/\.(mp4|mov|webm)$/i);
+          const isSvg = mediaPath.match(/\.svg$/i);
           if (isVideo) {
             const ext = mediaPath.split('.').pop().toLowerCase();
             const type = ext === 'mp4' ? 'video/mp4' : ext === 'webm' ? 'video/webm' : 'video/quicktime';
@@ -1371,7 +1364,7 @@ function openModal(p, i) {
               </div>`;
           } else {
             return `
-              <div class="m-media">
+              <div class="m-media${isSvg ? ' dark-bg' : ''}">
                 <img class="m-media-el" src="${m}" alt="Project image">
               </div>`;
           }
